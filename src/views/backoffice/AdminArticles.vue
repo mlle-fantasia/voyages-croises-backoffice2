@@ -1,8 +1,8 @@
 <template>
   <div class="admin-articles">
-    <div class="d-flex">
+    <div class="d-flex align-items-center">
       <h2>Les articles</h2>
-      <button @click="addArticle" class="btn btn-primary ms-5">Nouveau</button>
+      <button @click="addArticle" class="btn btn-warning ms-5">Nouveau</button>
     </div>
     <div class="row articles-list mt-3">
       <div

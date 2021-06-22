@@ -23,7 +23,12 @@
             >
           </li>
           <li class="nav-item">
-            <a class="nav-link" @click="goVoyageurs">Les Voyageurs</a>
+            <router-link
+              class="nav-link"
+              :class="$route.name === 'About' ? 'active' : ''"
+              to="/apropos"
+              >A propos</router-link
+            >
           </li>
           <li class="nav-item dropdown">
             <a
@@ -95,7 +100,7 @@ export default {
 .navbar {
   border-bottom: 1px solid #b9b9b9;
   width: 100%;
-  position: fixed;
+  /*   position: fixed; */
   display: flex;
   justify-content: center;
 }

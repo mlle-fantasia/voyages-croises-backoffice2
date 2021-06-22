@@ -4,12 +4,23 @@
       <img src="/img/logo.png" class="logo" alt="logo" />
       <button class="btn btn-warning">Découvrir</button>
     </div>
+    <div class="container-fluid bg-ocre">
+      <div class="container">
+        <h2 class="mb-3">Voyages croisées le blog</h2>
+        <h3>Bienvenue !</h3>
+        <p class="px-5">
+          Ce blog de voyages regroupe les expériences de Lionel et Alexandre à
+          travers le monde. Tu trouvera peut-être de quoi t'aider à préparer ton
+          future voyage !
+        </p>
+      </div>
+    </div>
     <div class="container mt-5">
       <h2 class="text-center">Les derniers articles</h2>
       <hr />
       <div class="row my-5">
         <div class="col-md-4" v-for="article in lastArticles" :key="article.id">
-          <div class="card" @click="goArticle(article.id)">
+          <div class="card" @click="goArticle(article)">
             <img
               :src="getImage(article)"
               class="card-img-top"
@@ -64,6 +75,7 @@ export default {
       return `${process.env.VUE_APP_SERVER_URL}/articles/${article.id}/image`;
     },
     goArticle(article) {
+      console.log("article", article);
       this.$router.push("/article/" + article.id);
     },
   },
@@ -86,6 +98,7 @@ export default {
   margin-bottom: 60px;
   width: 100px;
 }
+
 @media (min-width: 992px) {
   .logo {
     margin-bottom: 80px;

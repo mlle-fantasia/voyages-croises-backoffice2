@@ -7,6 +7,7 @@ const axios = require("axios");
 import Home from "../views/Home.vue";
 import Contact from "../views/Contact.vue";
 import Article from "../views/Article.vue";
+import About from "../views/About.vue";
 ////backoffice
 import Login from "../views/backoffice/Login.vue";
 import AdminHome from "../views/backoffice/AdminHome.vue";
@@ -23,13 +24,19 @@ const routes = [
 		meta: { public: true },
 	},
 	{
+		path: "/apropos",
+		name: "About",
+		component: About,
+		meta: { public: true },
+	},
+	{
 		path: "/contact",
 		name: "Contact",
 		component: Contact,
 		meta: { public: true },
 	},
 	{
-		path: "/articles/:id",
+		path: "/article/:id",
 		name: "article",
 		component: Article,
 		meta: { public: true },
@@ -90,7 +97,7 @@ router.beforeEach(async (to, from, next) => {
 			return false;
 		}
 	}
-
+	console.log("to.meta", to.meta);
 	if (to.meta && to.meta.public) return next();
 	else {
 		if (store.state.connected) return next();

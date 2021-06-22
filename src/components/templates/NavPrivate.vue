@@ -38,6 +38,38 @@
               >Les articles</router-link
             >
           </li>
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
+              :class="$route.name === 'AdminHome' ? 'active' : ''"
+              to="/admin/home"
+              >Les catégories</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
+              :class="$route.name === 'AdminHome' ? 'active' : ''"
+              to="/admin/home"
+              >Les utilisateurs</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
+              :class="$route.name === 'AdminHome' ? 'active' : ''"
+              to="/admin/home"
+              >Page d'accueil</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
+              :class="$route.name === 'AdminHome' ? 'active' : ''"
+              to="/admin/home"
+              >Page de contact</router-link
+            >
+          </li>
         </ul>
       </div>
     </div>

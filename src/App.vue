@@ -1,7 +1,11 @@
 <template>
   <div id="app">
     <div v-if="!$store.state.connected && $route.name !== 'Login'">
-      <nav-public class="nav-bublic" ref="navPublic"></nav-public>
+      <nav-public
+        :style="getStyles()"
+        class="nav-bublic"
+        ref="navPublic"
+      ></nav-public>
       <router-view />
       <footer-public></footer-public>
     </div>
@@ -37,7 +41,25 @@ export default {
         this.$refs.navPublic.$el.classList.value + " bg-white";
     });
   },
-  methods: {},
+  watch: {
+    $route(to) {
+      console.log("to", to, this.$refs.navPublic.styles);
+      if (to.name === "Home") {
+        this.$refs.navPublic.styles.position = "fixed";
+      } else {
+        this.$refs.navPublic.styles.position = "sticky";
+      }
+    },
+  },
+  methods: {
+    getStyles() {
+      if (this.$route.name === "Home") {
+        return "position:fixed;";
+      } else {
+        return "position:sticky;";
+      }
+    },
+  },
 };
 </script>
 

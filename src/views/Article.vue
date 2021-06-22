@@ -1,13 +1,11 @@
 <template>
-  <div class="home">
+  <div class="">
     <div class="container-fluid bg-image img-article" :style="getImage()"></div>
-    <div class="container">
+    <div class="container mt-5">
       <h1 class="text-center">{{ article.title }}</h1>
       <hr />
-      <div class="row">
-        <div class="col-md-12">
-          {{ article.contenu }}
-        </div>
+      <div class="row mt-4">
+        <div class="col-md-12" v-html="article.contenu"></div>
       </div>
     </div>
   </div>
@@ -17,7 +15,7 @@
 // @ is an alias to /src
 
 export default {
-  name: "Home",
+  name: "article",
   components: {},
   data() {
     return {
@@ -29,11 +27,11 @@ export default {
       process.env.VUE_APP_SERVER_URL + "/articles/" + this.$route.params.id
     );
     console.log(response);
-    this.article = response.data;
+    this.article = response.data.article;
   },
   methods: {
-    getImage(article) {
-      return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${article.id}/image')`;
+    getImage() {
+      return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${this.article.id}/image')`;
     },
   },
 };

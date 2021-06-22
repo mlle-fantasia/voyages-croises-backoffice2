@@ -18,6 +18,18 @@ h2 {
 .text-ocre {
 	color: #ad634b;
 }
+.bg-white {
+	background-color: #fff;
+}
+.bg-ocre {
+	padding: 20px;
+	text-align: center;
+	background-color: #c29479;
+	border-top: 7px solid #3b1818;
+	p {
+		font-size: 20px;
+	}
+}
 /*************** card  ***************/
 .card {
 	border: 0;

@@ -1,6 +1,6 @@
 <template>
   <div class="login d-flex align-items-center justify-content-center">
-    <div class="form" style="width: 20%">
+    <div class="form-login">
       <h3 class="text-center">Se connecter</h3>
       <div class="d-flex flex-column mt-4">
         <div class="container-login card p-3">
@@ -78,7 +78,31 @@ export default {
   background-size: cover;
   background-repeat: no-repeat;
 }
+.form-login {
+  width: 100%;
+  padding: 15px;
+}
 .container-login {
   background-color: #ffffff94;
+}
+@media (min-width: 768px) {
+  .form-login {
+    width: 60%;
+  }
+}
+@media (min-width: 992px) {
+  .form-login {
+    width: 40%;
+  }
+}
+@media (min-width: 1024px) {
+  .form-login {
+    width: 30%;
+  }
+}
+@media (min-width: 1440px) {
+  .form-login {
+    width: 20%;
+  }
 }
 </style>

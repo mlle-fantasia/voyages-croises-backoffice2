@@ -1,0 +1,95 @@
+<template>
+  <div class="home">
+    <div class="container-fluid img-accueil">
+      <img src="/img/logo.png" class="logo" alt="logo" />
+      <button class="btn btn-warning">Découvrir</button>
+    </div>
+    <div class="container mt-5">
+      <h2 class="text-center">Les derniers articles</h2>
+      <hr />
+      <div class="row my-5">
+        <div class="col-md-4" v-for="article in lastArticles" :key="article.id">
+          <div class="card" @click="goArticle(article.id)">
+            <img
+              :src="getImage(article)"
+              class="card-img-top"
+              alt="image principale de l'article"
+            />
+            <div class="card-body">
+              <p class="text-center text-ocre mb-0">
+                {{ article.category ? article.category.text : "" }}
+              </p>
+              <h4 class="card-title text-center">{{ article.title }}</h4>
+              <!-- <p class="card-text">{{ article.resume }}</p> -->
+              <div class="d-flex justify-content-between">
+                <div>{{ article.user ? article.user.firstname : "" }}</div>
+                <div>{{ article.date }}</div>
+              </div>
+              <!--  <a @click="goArticle(article.id)" class="btn btn-primary"
+                >Voir plus !
+              </a> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+// @ is an alias to /src
+
+export default {
+  name: "Home",
+  components: {},
+  data() {
+    return {
+      lastArticles: [],
+    };
+  },
+  async mounted() {
+    let query = {
+      limit: 3,
+    };
+    let response = await this.$axios.get(
+      process.env.VUE_APP_SERVER_URL + "/articles/list",
+      { params: query }
+    );
+    console.log(response);
+    this.lastArticles = response.data;
+  },
+  methods: {
+    getImage(article) {
+      //return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${article.id}/image')`;
+      return `${process.env.VUE_APP_SERVER_URL}/articles/${article.id}/image`;
+    },
+    goArticle(article) {
+      this.$router.push("/article/" + article.id);
+    },
+  },
+};
+</script>
+<style lang="scss" scoped>
+.img-accueil {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  background-image: url("/img/loginfond.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.logo {
+  margin-top: 57px;
+  margin-bottom: 60px;
+  width: 100px;
+}
+@media (min-width: 992px) {
+  .logo {
+    margin-bottom: 80px;
+    width: 150px;
+  }
+}
+</style>

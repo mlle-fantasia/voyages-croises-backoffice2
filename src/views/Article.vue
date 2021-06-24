@@ -2,10 +2,99 @@
   <div class="">
     <div class="container-fluid bg-image img-article" :style="getImage()"></div>
     <div class="container mt-5">
-      <h1 class="text-center">{{ article.title }}</h1>
-      <hr />
-      <div class="row mt-4">
-        <div class="col-md-12" v-html="article.contenu"></div>
+      <div class="row">
+        <div class="col-md-9">
+          <h1 class="text-center">{{ article.title }}</h1>
+          <hr />
+          <p class="text-center">
+            {{ article.user ? article.user.firstname : "" }} -
+            {{ article.date }}
+          </p>
+          <div class="row mt-4">
+            <div class="col-md-12" v-html="article.contenu"></div>
+          </div>
+          <h1 class="text-center">Commentaires</h1>
+          <hr />
+          <div v-for="com in article.comments" :key="com.id">
+            {{ com.name }}
+          </div>
+          <hr />
+          <h4 class="text-center">
+            Si vous avez aimé cette article, vous pouvez nous laisser un
+            commentaire
+          </h4>
+          <div class="mb-3">
+            <label class="form-label" for="title">Titre</label>
+            <br />
+            <input
+              class="form-control"
+              name="title"
+              id="title"
+              v-model="newCommentaire.title"
+              type="text"
+            />
+          </div>
+          <div>
+            <label for="newCommentaire">Commentaire *</label>
+            <textarea
+              class="form-control mb-3"
+              name="newCommentaire"
+              id="newCommentaire"
+              v-model="newCommentaire.text"
+              type="textarea"
+              rows="6"
+            >
+            </textarea>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label" for="name">Votre nom *</label>
+                <br />
+                <input
+                  class="form-control"
+                  name="name"
+                  id="name"
+                  v-model="newCommentaire.name"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label class="form-label" for="email"
+                  >Votre adresse email *</label
+                >
+                <br />
+                <input
+                  class="form-control"
+                  name="email"
+                  id="email"
+                  v-model="newCommentaire.email"
+                  type="text"
+                />
+                <small>Votre adresse email ne sera pas publiée</small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <h5 class="text-center mb-0">A propos</h5>
+          <hr />
+          <router-link
+            class="nav-link"
+            :class="$route.name === 'About' ? 'active' : ''"
+            to="/apropos"
+          >
+            <img class="img-fluid" src="/img/propos.jpg" alt="" />
+          </router-link>
+          <p class="text-center">
+            Lionel et Alexandre, père et fils, sont passionnés de voyages et de
+            découvertes, ils partagent avec vous leur expérience
+          </p>
+          <h5 class="mt-4 text-center mb-0">Derniers articles</h5>
+          <hr />
+        </div>
       </div>
     </div>
   </div>
@@ -20,6 +109,7 @@ export default {
   data() {
     return {
       article: {},
+      newCommentaire: { text: "", email: "", name: "", title: "" },
     };
   },
   async mounted() {

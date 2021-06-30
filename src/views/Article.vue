@@ -3,26 +3,44 @@
     <div class="container-fluid bg-image img-article" :style="getImage()"></div>
     <div class="container mt-5">
       <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-9 mb-5">
           <h1 class="text-center">{{ article.title }}</h1>
           <hr />
           <p class="text-center">
-            {{ article.user ? article.user.firstname : "" }} -
-            {{ article.date }}
+            Publié le
+            {{ article.date | formatDate }} par
+            {{ article.user ? article.user.firstname : "" }}
           </p>
           <div class="row mt-4">
             <div class="col-md-12" v-html="article.contenu"></div>
           </div>
           <h1 class="text-center">Commentaires</h1>
           <hr />
-          <div v-for="com in article.comments" :key="com.id">
-            {{ com.name }}
+          <div v-if="article.comments.length">
+            <div class="row" v-for="com in article.comments" :key="com.id">
+              <div class="col-md-2">
+                <img
+                  class="img-fluid"
+                  :src="`/img/imgcomments/comment${com.image}.jpg`"
+                  alt=""
+                />
+              </div>
+              <div class="col-md-10">
+                <p>
+                  <span class="fw-bold">{{ com.name }}</span> le
+                  {{ com.createdAt | formatDateTime }}
+                </p>
+                <h6>{{ com.title }}</h6>
+                <p>{{ com.contenu }}</p>
+              </div>
+            </div>
           </div>
+          <div v-else>Il n'y a pas encore de commentaire sur cet article</div>
           <hr />
-          <h4 class="text-center">
+          <h5 class="text-center">
             Si vous avez aimé cette article, vous pouvez nous laisser un
             commentaire
-          </h4>
+          </h5>
           <div class="mb-3">
             <label class="form-label" for="title">Titre</label>
             <br />
@@ -77,6 +95,14 @@
               </div>
             </div>
           </div>
+          <div class="alert alert-success" v-if="com_success">
+            Votre commentaire à bien été envoyé, il sera publié une fois vérifié
+            par l'administrateur du site
+          </div>
+          <div class="alert alert-danger" v-if="com_error">
+            Attention, un des champs obligatoire est manquant
+          </div>
+          <button @click="addComment" class="btn btn-primary">Commenter</button>
         </div>
         <div class="col-md-3">
           <h5 class="text-center mb-0">A propos</h5>
@@ -110,6 +136,8 @@ export default {
     return {
       article: {},
       newCommentaire: { text: "", email: "", name: "", title: "" },
+      com_success: false,
+      com_error: false,
     };
   },
   async mounted() {
@@ -122,6 +150,26 @@ export default {
   methods: {
     getImage() {
       return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${this.article.id}/image')`;
+    },
+    async addComment() {
+      this.com_error = false;
+      this.com_success = false;
+      if (
+        !this.newCommentaire.text ||
+        !this.newCommentaire.name ||
+        !this.newCommentaire.email
+      )
+        this.com_error = true;
+      else {
+        let response = await this.$axios.put(
+          process.env.VUE_APP_SERVER_URL +
+            "/articles/" +
+            this.$route.params.id +
+            "/newcomment",
+          this.newCommentaire
+        );
+        console.log(response);
+      }
     },
   },
 };

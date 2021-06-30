@@ -139,14 +139,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.bg-lio {
-  padding: 20px;
-  background-image: url("/img/lionel1.jpg");
-}
-.bg-alex {
-  padding: 20px;
-  background-image: url("/img/alexandre1.jpg");
-}
 .img-fluid {
   //max-width: 70%;
 }

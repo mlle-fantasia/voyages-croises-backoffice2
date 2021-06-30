@@ -44,6 +44,31 @@
         </div>
       </div>
     </div>
+    <div class="container-fluid bg-image bg-lio">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-md-6 bg-white">
+            <p>
+              Présentation du blog ... <br /><br />
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
+              enim ad minim veniam, quis nostrud exercitation ullamco laboris
+              nisi ut aliquip ex ea commodo consequat. <br /><br />
+
+              Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+              cupidatat non proident, sunt in culpa qui officia deserunt mollit
+              anim id est laborum."<br />
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-5">
+      <h2 class="text-center">Retrouvez Lionel sur Instagram</h2>
+      <hr />
+    </div>
+    <div class="container-fluid"></div>
   </div>
 </template>
 
@@ -104,5 +129,8 @@ export default {
     margin-bottom: 80px;
     width: 150px;
   }
+}
+.bg-lio {
+  padding: 60px;
 }
 </style>

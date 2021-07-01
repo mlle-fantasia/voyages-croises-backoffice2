@@ -79,21 +79,94 @@
               :insertImageAsBase64URI="true"
             />
           </div>
-          <div class="row mb-3">
+          <div class="row mb-4">
+            <h5>Catégories</h5>
             <div class="col-md-6">
+              <label for="">Catégorie</label>
               <v-select
                 v-model="categorieSeleted"
-                label="text"
                 :options="categories"
               ></v-select>
+              <button
+                @click="formAddCategorie = !formAddCategorie"
+                class="btn btn-sm btn-primary mt-2"
+              >
+                Ajouter une catégorie
+              </button>
+              <div class="mt-3 bg-light p-2" v-if="formAddCategorie">
+                <div class="mb-3">
+                  <label class="form-label mb-0" for="textcat">Nom</label>
+                  <br />
+                  <input
+                    class="form-control"
+                    name="textcat"
+                    id="textcat"
+                    v-model="newCaterory.text"
+                    type="text"
+                  />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label mb-0" for="valuecat">Clé</label>
+                  <br />
+                  <input
+                    class="form-control"
+                    name="valuecat"
+                    id="valuecat"
+                    v-model="newCaterory.value"
+                    type="text"
+                  />
+                </div>
+                <button
+                  @click="addCategorie"
+                  class="btn btn-sm btn-primary mt-2"
+                >
+                  Ajouter
+                </button>
+              </div>
             </div>
             <div class="col-md-6">
               <div v-if="categorieSeleted">
+                <label for="">Sous-catégorie</label>
                 <v-select
                   v-model="subCategorieSeleted"
-                  label="text"
                   :options="subCategories"
                 ></v-select>
+                <button
+                  @click="formAddSubCategorie = !formAddSubCategorie"
+                  class="btn btn-sm btn-primary mt-2"
+                >
+                  Ajouter une Sous-catégorie dans {{ categorieSeleted.text }}
+                </button>
+                <div class="mt-3 bg-light p-2" v-if="formAddSubCategorie">
+                  <div class="mb-3">
+                    <label class="form-label mb-0" for="textsubcat">Nom</label>
+                    <br />
+                    <input
+                      class="form-control"
+                      name="textsubcat"
+                      id="textsubcat"
+                      v-model="newSubCaterory.text"
+                      type="text"
+                    />
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label mb-0" for="valuesubcat">Clé</label>
+                    <br />
+                    <input
+                      class="form-control"
+                      name="valuesubcat"
+                      id="valuesubcat"
+                      v-model="newSubCaterory.value"
+                      type="text"
+                    />
+                  </div>
+                  <button
+                    @click="addSubCategorie"
+                    class="btn btn-sm btn-primary mt-2"
+                  >
+                    Ajouter
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -106,7 +179,8 @@
                 <span class="slider round"></span>
               </label>
             </div>
-
+          </div>
+          <div class="row d-flex">
             <button @click="saveArticle" class="btn btn-primary">
               Enregistrer
             </button>
@@ -129,6 +203,10 @@ export default {
       categorieSeleted: {},
       subCategories: [],
       subCategorieSeleted: {},
+      formAddCategorie: false,
+      newCaterory: { text: "", value: "" },
+      formAddSubCategorie: false,
+      newSubCaterory: { text: "", value: "" },
       buttons: [
         "source",
         "|",
@@ -171,6 +249,8 @@ export default {
     );
     console.log(response);
     this.article = response.data.article;
+    this.categorieSeleted = this.article.category;
+    this.subCategorieSeleted = this.article.subcategory;
     this.categories = response.data.categories;
   },
   watch: {
@@ -186,6 +266,8 @@ export default {
       else
         return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${this.article.id}/image')`;
     },
+    addSubCategorie() {},
+    addCategorie() {},
     fileJusteSelected($event) {
       if (!$event.target.files.length) return;
       this.mainImage.image = $event.target.files[0];
@@ -219,8 +301,8 @@ export default {
       this.mainImage = { image: null, binary: null };
     },
     async saveArticle() {
-      this.article.categories = this.categorieSeleted.id;
-      this.article.subcategories = this.subCategorieSeleted.id;
+      this.article.category = this.categorieSeleted.id;
+      this.article.subcategory = this.subCategorieSeleted.id;
       console.log("this.article", this.article);
       let response;
       if (this.article.id) {

@@ -54,20 +54,13 @@
               >Les utilisateurs</router-link
             >
           </li>
+
           <li class="nav-item">
             <router-link
               class="nav-link"
-              :class="$route.name === 'AdminHome' ? 'active' : ''"
-              to="/admin/home"
-              >Page d'accueil</router-link
-            >
-          </li>
-          <li class="nav-item">
-            <router-link
-              class="nav-link"
-              :class="$route.name === 'AdminHome' ? 'active' : ''"
-              to="/admin/home"
-              >Page de contact</router-link
+              :class="$route.name === 'pages' ? 'active' : ''"
+              to="/admin/pages"
+              >Les pages</router-link
             >
           </li>
         </ul>

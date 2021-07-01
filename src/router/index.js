@@ -8,11 +8,14 @@ import Home from "../views/Home.vue";
 import Contact from "../views/Contact.vue";
 import Article from "../views/Article.vue";
 import About from "../views/About.vue";
-////backoffice
+//// backoffice
 import Login from "../views/backoffice/Login.vue";
 import AdminHome from "../views/backoffice/AdminHome.vue";
 import AdminArticles from "../views/backoffice/AdminArticles.vue";
 import AdminArticlesEdit from "../views/backoffice/AdminArticlesEdit.vue";
+import AdminPages from "../views/backoffice/AdminPages.vue";
+////// les pages
+import AdminPageEdit from "../views/backoffice/AdminPageEdit.vue";
 
 Vue.use(VueRouter);
 
@@ -63,6 +66,16 @@ const routes = [
 		path: "/admin/articles/:id",
 		name: "AdminArticlesEdit",
 		component: AdminArticlesEdit,
+	},
+	{
+		path: "/admin/pages",
+		name: "Pages",
+		component: AdminPages,
+	},
+	{
+		path: "/admin/pages/:id",
+		name: "Page",
+		component: AdminPageEdit,
 	},
 ];
 

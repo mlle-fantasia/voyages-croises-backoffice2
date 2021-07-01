@@ -36,14 +36,14 @@ export default {
     return {};
   },
   async mounted() {
-    window.addEventListener("scroll", function () {
+    /* window.addEventListener("scroll", function () {
       this.$refs.navPublic.$el.classList.value =
         this.$refs.navPublic.$el.classList.value + " bg-white";
-    });
+    }); */
   },
   watch: {
     $route(to) {
-      console.log("to", to, this.$refs.navPublic.styles);
+      if (!this.$refs.navPublic) return;
       if (to.name === "Home") {
         this.$refs.navPublic.styles.position = "fixed";
       } else {

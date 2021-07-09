@@ -49,8 +49,8 @@
           <li class="nav-item">
             <router-link
               class="nav-link"
-              :class="$route.name === 'AdminHome' ? 'active' : ''"
-              to="/admin/home"
+              :class="$route.name === 'AdminUsers' ? 'active' : ''"
+              to="/admin/users"
               >Les utilisateurs</router-link
             >
           </li>

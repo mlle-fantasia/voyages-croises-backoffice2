@@ -1,4 +1,5 @@
 <template>
+  <!-- ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION -->
   <div class="admin-articles">
     <div class="d-flex flex-column">
       <h2>Edition d'un article</h2>
@@ -86,6 +87,7 @@
               <v-select
                 v-model="categorieSeleted"
                 :options="categories"
+                label="text"
               ></v-select>
               <button
                 @click="formAddCategorie = !formAddCategorie"
@@ -125,19 +127,21 @@
               </div>
             </div>
             <div class="col-md-6">
-              <div v-if="categorieSeleted">
-                <label for="">Sous-catégorie</label>
+              <div>
+                <label for="">Tags</label>
                 <v-select
-                  v-model="subCategorieSeleted"
-                  :options="subCategories"
+                  :multiple="true"
+                  v-model="tagsSeleted"
+                  :options="tags"
+                  label="text"
                 ></v-select>
                 <button
-                  @click="formAddSubCategorie = !formAddSubCategorie"
+                  @click="formAddTag = !formAddTag"
                   class="btn btn-sm btn-primary mt-2"
                 >
-                  Ajouter une Sous-catégorie dans {{ categorieSeleted.text }}
+                  créer un nouveau tag
                 </button>
-                <div class="mt-3 bg-light p-2" v-if="formAddSubCategorie">
+                <div class="mt-3 bg-light p-2" v-if="formAddTag">
                   <div class="mb-3">
                     <label class="form-label mb-0" for="textsubcat">Nom</label>
                     <br />
@@ -145,7 +149,7 @@
                       class="form-control"
                       name="textsubcat"
                       id="textsubcat"
-                      v-model="newSubCaterory.text"
+                      v-model="newTag.text"
                       type="text"
                     />
                   </div>
@@ -156,7 +160,7 @@
                       class="form-control"
                       name="valuesubcat"
                       id="valuesubcat"
-                      v-model="newSubCaterory.value"
+                      v-model="newTag.value"
                       type="text"
                     />
                   </div>
@@ -201,12 +205,12 @@ export default {
       mainImage: { image: null, binary: null },
       categories: [],
       categorieSeleted: {},
-      subCategories: [],
-      subCategorieSeleted: {},
+      tags: [],
+      tagsSeleted: [],
       formAddCategorie: false,
       newCaterory: { text: "", value: "" },
-      formAddSubCategorie: false,
-      newSubCaterory: { text: "", value: "" },
+      formAddTag: false,
+      newTag: { text: "", value: "" },
       buttons: [
         "source",
         "|",
@@ -250,15 +254,11 @@ export default {
     console.log(response);
     this.article = response.data.article;
     this.categorieSeleted = this.article.category;
-    this.subCategorieSeleted = this.article.subcategory;
+    this.tagsSeleted = this.article.tags;
     this.categories = response.data.categories;
+    this.tags = response.data.tags;
   },
-  watch: {
-    categorieSeleted: function (val) {
-      console.log("load subcat", val);
-      this.subCategories = val.subcategories;
-    },
-  },
+  watch: {},
   methods: {
     getImage() {
       if (this.mainImage.binary)
@@ -266,6 +266,9 @@ export default {
       else
         return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${this.article.id}/image')`;
     },
+    /*     inputTag(val) {
+      console.log("val", val);
+    }, */
     addSubCategorie() {},
     addCategorie() {},
     fileJusteSelected($event) {
@@ -302,7 +305,7 @@ export default {
     },
     async saveArticle() {
       this.article.category = this.categorieSeleted.id;
-      this.article.subcategory = this.subCategorieSeleted.id;
+      this.article.tags = this.tags;
       console.log("this.article", this.article);
       let response;
       if (this.article.id) {

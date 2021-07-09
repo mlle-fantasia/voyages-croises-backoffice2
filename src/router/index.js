@@ -14,6 +14,8 @@ import AdminHome from "../views/backoffice/AdminHome.vue";
 import AdminArticles from "../views/backoffice/AdminArticles.vue";
 import AdminArticlesEdit from "../views/backoffice/AdminArticlesEdit.vue";
 import AdminPages from "../views/backoffice/AdminPages.vue";
+import AdminUsers from "../views/backoffice/AdminUsers.vue";
+import AdminUsersEdit from "../views/backoffice/AdminUsersEdit.vue";
 ////// les pages
 import AdminPageEdit from "../views/backoffice/AdminPageEdit.vue";
 
@@ -56,6 +58,16 @@ const routes = [
 		path: "/admin/home",
 		name: "AdminHome",
 		component: AdminHome,
+	},
+	{
+		path: "/admin/users",
+		name: "AdminUsers",
+		component: AdminUsers,
+	},
+	{
+		path: "/admin/users/:id",
+		name: "AdminUsersEdit",
+		component: AdminUsersEdit,
 	},
 	{
 		path: "/admin/articles",

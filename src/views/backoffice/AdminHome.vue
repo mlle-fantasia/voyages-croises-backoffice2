@@ -1,6 +1,29 @@
 <template>
   <div class="admin-home">
     <h2>Tableau de bord</h2>
+    <div class="row mt-3">
+      <div class="col-md-8">
+        <h5>Dernier article publié par vous</h5>
+        <div class="card-article d-flex align-items-center">
+          <div
+            class="bg-image miniature"
+            :style="getImage(lastArticleUser.id)"
+          ></div>
+          <div class="ms-2 fw-bold">
+            {{ lastArticleUser.title }}
+          </div>
+          <div class="flex-grow-1"></div>
+          <div class="">oui</div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <h5>Dernier article publié sur le site</h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-2"></div>
+    </div>
   </div>
 </template>
 
@@ -10,17 +33,24 @@
 export default {
   name: "Home",
   components: {},
+  data() {
+    return {
+      lastArticle: {},
+      lastArticleUser: {},
+    };
+  },
   async mounted() {
     let response = await this.$axios.get(
-      process.env.VUE_APP_SERVER_URL + "/articles/list",
-      {},
-      {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      }
+      process.env.VUE_APP_SERVER_URL + "/admin/home"
     );
     console.log(response);
+    this.lastArticle = response.data.lastArticle;
+    this.lastArticleUser = response.data.lastArticleUser;
+  },
+  methods: {
+    getImage(id) {
+      return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${id}/image')`;
+    },
   },
 };
 </script>

@@ -52,6 +52,27 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-2">
+              <label class="form-label" for="inputMainImage">Image</label>
+              <input
+                type="file"
+                class="form-control"
+                ref="inputMainImage"
+                name="inputMainImage"
+                id="inputMainImage"
+                accept="image/png, image/jpeg"
+                @change="fileJusteSelected($event)"
+              />
+            </div>
+            <div
+              v-if="mainImage.binary || page.image"
+              class="mb-3 main-image"
+              :style="getImage()"
+            ></div>
+          </div>
+        </div>
         <div class="d-flex align-items-center mb-3">
           <div class="me-2 fw-bold">page dans le menu principal</div>
           <label class="switch">
@@ -85,12 +106,19 @@ export default {
       pages: [],
       formAddPage: false,
       page: {},
+      mainImage: { image: null, binary: null },
     };
   },
   async mounted() {
     this.loadPages();
   },
   methods: {
+    getImage() {
+      if (this.mainImage.binary)
+        return "background-image:url(" + this.mainImage.binary + ")";
+      else
+        return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${this.article.id}/image')`;
+    },
     async loadPages() {
       let response = await this.$axios.get(
         process.env.VUE_APP_SERVER_URL + "/admin/pages/list"
@@ -111,9 +139,42 @@ export default {
         this.page
       );
       console.log(response);
-
+      if (this.mainImage.image) await this.saveImage();
       this.formAddPage = false;
       this.loadPages();
+    },
+    // image
+    fileJusteSelected($event) {
+      if (!$event.target.files.length) return;
+      this.mainImage.image = $event.target.files[0];
+      var reader = new FileReader();
+      var that = this;
+      reader.onload = (function () {
+        return function (e) {
+          that.mainImage.binary = e.target.result;
+        };
+      })($event.target.files[0]);
+      reader.readAsDataURL($event.target.files[0]);
+    },
+    async saveImage() {
+      console.log("je passe");
+      let file = this.mainImage.image;
+      if (!file) return;
+      let formData = new FormData();
+      formData.append("image", file, file.name);
+      await this.$axios.post(
+        process.env.VUE_APP_SERVER_URL +
+          "/admin/page/" +
+          this.page.id +
+          "/image",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      this.mainImage = { image: null, binary: null };
     },
   },
 };
@@ -147,6 +208,13 @@ export default {
   padding: 20px 50px;
   background-color: #f5f1ed;
   border-radius: 10px;
+}
+.main-image {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 230px;
 }
 @media (min-width: 992px) {
   .miniature {

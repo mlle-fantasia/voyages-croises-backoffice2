@@ -103,6 +103,7 @@ export default {
   /*   position: fixed; */
   display: flex;
   justify-content: center;
+  background-color: #fff;
 }
 .navbar-nav {
   margin: auto;

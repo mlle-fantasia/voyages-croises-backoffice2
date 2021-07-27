@@ -1,39 +1,72 @@
 <template>
   <div class="">
     <div class="">
-      <h2>Éditez les textes de la page : {{ page.name }}</h2>
+      <h2>Éditez la page : {{ page.name }}</h2>
+      <h3>La page</h3>
     </div>
-    <div>
-      <button @click="formAddText" class="btn btn-primary">
-        Ajouter un texte
-      </button>
+    <div class="">
+      <form-page :pageId="$route.params.id"></form-page>
     </div>
-    <div v-if="showFormAddText">
+    <div class="d-flex align-items-center mt-3">
+      <h3>Les textes</h3>
+    </div>
+
+    <div v-for="text in texts" :key="text.key">
       <div class="mb-3">
-        <label class="form-label" for="title">clé *</label>
-        <br />
         <input
           class="form-control"
-          name="keyText"
-          id="keyText"
-          v-model="newText.key"
+          :name="'key' + text.key"
+          :id="'key' + text.key"
+          v-model="text.key"
           type="text"
+          disabled
         />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="contenu">Contenu du text</label>
         <jodit-editor
-          name="contenu"
-          id="contenu"
-          v-model="newText.contenu"
+          :name="'text' + text.key"
+          :id="'text' + text.key"
+          v-model="text.text"
           :buttons="buttons"
-          :insertImageAsBase64URI="true"
         />
       </div>
     </div>
     <div class="row mt-3">
       <div class="col-md-12">
-        <button @click="save" class="btn btn-primary">Enregistrer</button>
+        <button @click="saveTextes" class="btn btn-success">Enregistrer</button>
+        <button @click="formAddText" class="btn btn-primary ms-2">
+          Ajouter un texte
+        </button>
+      </div>
+    </div>
+    <div v-if="showFormAddText" class="form-addtext mt-3">
+      <div class="mb-3">
+        <label class="form-label" for="keyNewText">clé *</label>
+        <br />
+        <input
+          class="form-control"
+          name="keyNewText"
+          id="keyNewText"
+          v-model="newText.key"
+          type="text"
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="textNewText">Contenu du text</label>
+        <jodit-editor
+          name="textNewText"
+          id="textNewText"
+          v-model="newText.text"
+          :buttons="buttons"
+        />
+      </div>
+      <div class="d-flex">
+        <button @click="cancelNewText" class="btn btn-secondary btn-sm">
+          Annuler
+        </button>
+        <button @click="saveNewText" class="btn btn-primary ms-2 btn-sm">
+          Ajouter texte
+        </button>
       </div>
     </div>
   </div>
@@ -43,9 +76,12 @@
 export default {
   name: "AdminPageEdit",
   components: {},
+  props: {},
   data() {
     return {
       page: {},
+      texts: [],
+      newText: { key: "", contenu: "" },
       showFormAddText: false,
       buttons: [
         "source",
@@ -63,6 +99,8 @@ export default {
         "indent",
         "outdent",
         "left",
+        "center",
+        "right",
         "|",
         "link",
         "|",
@@ -79,20 +117,81 @@ export default {
     };
   },
   async mounted() {
-    console.log("je passe ");
-    let response = await this.$axios.get(
-      process.env.VUE_APP_SERVER_URL + "/admin/pages/" + this.$route.params.id
-    );
-    console.log(response);
-    this.page = response.data.page;
+    this.loadPageWithText();
   },
   watch: {},
   methods: {
-    save() {},
+    async loadPageWithText() {
+      let response = await this.$axios.get(
+        process.env.VUE_APP_SERVER_URL + "/admin/pages/" + this.$route.params.id
+      );
+
+      this.page = response.data;
+      this.texts = this.page.texts;
+    },
     formAddText() {
       this.showFormAddText = true;
+    },
+    cancelNewText() {
+      this.showFormAddText = false;
+      this.newText = { key: "", contenu: "" };
+    },
+    async saveNewText() {
+      this.newText.pagesId = this.page.id;
+      let response = await this.$axios.post(
+        process.env.VUE_APP_SERVER_URL + "/admin/texts/add",
+        this.newText
+      );
+      if (response.status !== 200) {
+        this.$notify({
+          group: "message",
+          type: "error",
+          title: "Erreur",
+          text: "une erreur s'est produite ",
+        });
+      } else {
+        this.$notify({
+          group: "message",
+          type: "success",
+          title: "Confirmation",
+          text: "Text bien entregistré !",
+        });
+      }
+      this.showFormAddText = false;
+      this.newText = { key: "", contenu: "" };
+      this.loadPageWithText();
+    },
+    async saveTextes() {
+      let response = await this.$axios.put(
+        process.env.VUE_APP_SERVER_URL + "/admin/texts/edit",
+        this.texts
+      );
+      console.log("response", response);
+      if (response.status !== 200) {
+        this.$notify({
+          group: "message",
+          type: "error",
+          title: "Erreur",
+          text: "une erreur s'est produite ",
+        });
+      } else {
+        this.$notify({
+          group: "message",
+          type: "success",
+          title: "Confirmation",
+          text: "Textes bien entregistrés !",
+        });
+      }
+      this.loadPageWithText();
     },
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.form-addtext {
+  margin-top: 20px;
+  padding: 20px 50px;
+  background-color: #e9eef9;
+  border-radius: 10px;
+}
+</style>

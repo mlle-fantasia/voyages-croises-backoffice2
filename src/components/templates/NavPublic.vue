@@ -104,6 +104,7 @@ export default {
   display: flex;
   justify-content: center;
   background-color: #fff;
+  z-index: 1000;
 }
 .navbar-nav {
   margin: auto;

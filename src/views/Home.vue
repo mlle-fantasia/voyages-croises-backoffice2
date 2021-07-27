@@ -5,14 +5,14 @@
       <button class="btn btn-warning">Découvrir</button>
     </div>
     <div class="container-fluid bg-ocre">
-      <div class="container">
-        <h2 class="mb-3">Voyages croisées le blog</h2>
+      <div class="container" v-html="textBienvenue">
+        <!--  <h2 class="mb-3">Voyages croisées le blog</h2>
         <h3>Bienvenue !</h3>
         <p class="px-5">
           Ce blog de voyages regroupe les expériences de Lionel et Alexandre à
           travers le monde. Tu trouvera peut-être de quoi t'aider à préparer ton
           future voyage !
-        </p>
+        </p> -->
       </div>
     </div>
     <div class="container mt-5">
@@ -47,8 +47,8 @@
     <div class="container-fluid bg-image bg-lio">
       <div class="container">
         <div class="row">
-          <div class="col-12 col-md-6 bg-white">
-            <p>
+          <div class="col-12 col-md-6 bg-white" v-html="presentationBlog">
+            <!--             <p>
               Présentation du blog ... <br /><br />
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -59,7 +59,7 @@
               cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
               cupidatat non proident, sunt in culpa qui officia deserunt mollit
               anim id est laborum."<br />
-            </p>
+            </p> -->
           </div>
         </div>
       </div>
@@ -81,9 +81,13 @@ export default {
   data() {
     return {
       lastArticles: [],
+      texts: [],
+      presentationBlog: "",
+      textBienvenue: "",
     };
   },
   async mounted() {
+    // get les trois derniers articles
     let query = {
       limit: 3,
     };
@@ -93,6 +97,22 @@ export default {
     );
     console.log(response);
     this.lastArticles = response.data;
+
+    // get text de la page
+    let response2 = await this.$axios.get(
+      process.env.VUE_APP_SERVER_URL + "/pages/" + this.$route.name
+    );
+    this.texts = response2.data.texts;
+    let textBienvenue = this.texts.filter((text) => {
+      return text.key === "Texte de bienvenue";
+    });
+    if (textBienvenue.length) this.textBienvenue = textBienvenue[0].text;
+
+    let presentationBlog = this.texts.filter((text) => {
+      return text.key === "Description du blog";
+    });
+    if (presentationBlog.length)
+      this.presentationBlog = presentationBlog[0].text;
   },
   methods: {
     getImage(article) {

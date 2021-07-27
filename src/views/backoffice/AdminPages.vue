@@ -14,6 +14,14 @@
           <div class="bg-image miniature img-accueil"></div>
           <div class="ms-2 fw-bold">{{ page.name }}</div>
           <div class="flex-grow-1"></div>
+          <div>
+            <button
+              @click.stop="deletePage(page)"
+              class="btn btn-danger btn-sm"
+            >
+              Supprimer
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -23,84 +31,18 @@
       </div>
     </div>
     <div class="row" v-if="formAddPage">
-      <div class="col-md-12 form-addpage">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label class="form-label" for="title">Nom de la page</label>
-              <br />
-              <input
-                class="form-control"
-                name="title"
-                id="title"
-                v-model="page.name"
-                type="text"
-              />
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label class="form-label" for="title">Clé</label>
-              <br />
-              <input
-                class="form-control"
-                name="title"
-                id="title"
-                v-model="page.key"
-                type="text"
-              />
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="mb-2">
-              <label class="form-label" for="inputMainImage">Image</label>
-              <input
-                type="file"
-                class="form-control"
-                ref="inputMainImage"
-                name="inputMainImage"
-                id="inputMainImage"
-                accept="image/png, image/jpeg"
-                @change="fileJusteSelected($event)"
-              />
-            </div>
-            <div
-              v-if="mainImage.binary || page.image"
-              class="mb-3 main-image"
-              :style="getImage()"
-            ></div>
-          </div>
-        </div>
-        <div class="d-flex align-items-center mb-3">
-          <div class="me-2 fw-bold">page dans le menu principal</div>
-          <label class="switch">
-            <input v-model="page.in_menuprincipal" type="checkbox" />
-            <span class="slider round"></span>
-          </label>
-        </div>
-        <div class="d-flex align-items-center mb-3">
-          <div class="me-2 fw-bold">page dans le menu pied de page</div>
-          <label class="switch">
-            <input v-model="page.in_menufooter" type="checkbox" />
-            <span class="slider round"></span>
-          </label>
-        </div>
-        <div>
-          <button @click="savePage" class="btn btn-warning">Enregistrer</button>
-        </div>
-      </div>
+      <form-page @saved="pageSaved"></form-page>
     </div>
   </div>
 </template>
 
 <script>
+import FormPage from "./FormPage.vue";
 // @ is an alias to /src
 
 export default {
-  name: "Home",
-  components: {},
+  name: "AdminPages",
+  components: { FormPage },
   data() {
     return {
       pages: [],
@@ -164,7 +106,7 @@ export default {
       formData.append("image", file, file.name);
       await this.$axios.post(
         process.env.VUE_APP_SERVER_URL +
-          "/admin/page/" +
+          "/admin/pages/" +
           this.page.id +
           "/image",
         formData,
@@ -175,6 +117,17 @@ export default {
         }
       );
       this.mainImage = { image: null, binary: null };
+    },
+    async deletePage(page) {
+      await this.$axios.delete(
+        process.env.VUE_APP_SERVER_URL + "/admin/pages/delete/" + page.id
+      );
+      this.loadPages();
+      //console.log("response", response);
+    },
+    pageSaved() {
+      this.formAddPage = false;
+      this.loadPages();
     },
   },
 };

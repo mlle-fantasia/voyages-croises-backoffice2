@@ -24,19 +24,19 @@ Vue.use(VueRouter);
 const routes = [
 	{
 		path: "/",
-		name: "Home",
+		name: "home",
 		component: Home,
 		meta: { public: true },
 	},
 	{
 		path: "/apropos",
-		name: "About",
+		name: "apropos",
 		component: About,
 		meta: { public: true },
 	},
 	{
 		path: "/contact",
-		name: "Contact",
+		name: "contact",
 		component: Contact,
 		meta: { public: true },
 	},

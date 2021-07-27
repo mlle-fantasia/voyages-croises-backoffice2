@@ -45,8 +45,8 @@ export default {
   components: {},
   data() {
     return {
-      login: "marinafront@hotmail.fr",
-      password: "pass123",
+      login: "",
+      password: "",
     };
   },
   async mounted() {},

@@ -1,13 +1,13 @@
 <template>
   <div class="contact">
-    <div class="container-fluid img-accueil"></div>
+    <div class="container-fluid img-header-page" :style="getImage()"></div>
     <div class="container">
       <div class="row my-5">
         <div class="col-md-9">
           <h2 class="text-center">Pour nous contacter</h2>
           <hr />
           <div v-html="maintext"></div>
-          <div class="form-contact">
+          <div class="form-contact mt-5">
             <div class="mb-3">
               <label class="form-label" for="title">Objet</label>
               <br />
@@ -75,21 +75,10 @@
           </div>
         </div>
         <div class="col-md-3">
-          <h5 class="text-center mb-0">A propos</h5>
-          <hr />
-          <router-link
-            class="nav-link"
-            :class="$route.name === 'About' ? 'active' : ''"
-            to="/apropos"
-          >
-            <img class="img-fluid" src="/img/propos.jpg" alt="" />
-          </router-link>
-          <p class="text-center">
-            Lionel et Alexandre, père et fils, sont passionnés de voyages et de
-            découvertes, ils partagent avec vous leur expérience
-          </p>
-          <h5 class="mt-4 text-center mb-0">Derniers articles</h5>
-          <hr />
+          <aside2
+            :lastArticles="lastArticles"
+            :textapropos="textapropos"
+          ></aside2>
         </div>
       </div>
     </div>
@@ -104,25 +93,39 @@ export default {
   components: {},
   data() {
     return {
+      page: {},
       texts: [],
       maintext: "",
       newMessage: { message: "", email: "", name: "", object: "" },
       message_success: false,
       message_error: false,
+      textapropos: "",
+      lastArticles: [],
     };
   },
   async mounted() {
     // get texts de la page
+    let params = {
+      aside: true,
+    };
     let response = await this.$axios.get(
-      process.env.VUE_APP_SERVER_URL + "/pages/" + this.$route.name
+      process.env.VUE_APP_SERVER_URL + "/pages/" + this.$route.name,
+      { params }
     );
-    this.texts = response.data.texts;
+    this.page = response.data.page;
+    this.texts = response.data.page.texts;
     let maintext = this.texts.filter((text) => {
       return text.key === "Texte principal";
     });
     if (maintext.length) this.maintext = maintext[0].text;
+
+    this.textapropos = response.data.apropos.text;
+    this.lastArticles = response.data.lastarticles;
   },
   methods: {
+    getImage() {
+      return `background-image:url('${process.env.VUE_APP_SERVER_URL}/pages/${this.page.id}/image')`;
+    },
     async sendMessage() {
       this.message_error = false;
       this.message_success = false;

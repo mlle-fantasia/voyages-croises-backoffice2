@@ -34,7 +34,7 @@
         <div class="d-flex align-items-center mb-3">
           <div class="me-2 fw-bold">Afficher une image principale</div>
           <label class="switch">
-            <input v-model="page.have_image" type="checkbox" disabled />
+            <input v-model="page.have_image" type="checkbox" />
             <span class="slider round"></span>
           </label>
         </div>
@@ -189,20 +189,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.miniature {
-  width: 65px;
-  height: 65px;
-  border-radius: 15px;
-}
-.img-accueil {
-  background-image: url("/img/loginfond.jpg");
-}
-.img-apropos {
-  background-image: url("/img/lionel2.jpg");
-}
-.img-contact {
-  background-image: url("/img/alexandre1.jpg");
-}
 .card-article {
   cursor: pointer;
   background-color: #fff;
@@ -224,10 +210,5 @@ export default {
   background-repeat: no-repeat;
   width: 100%;
   height: 230px;
-}
-@media (min-width: 992px) {
-  .miniature {
-    width: 130px;
-  }
 }
 </style>

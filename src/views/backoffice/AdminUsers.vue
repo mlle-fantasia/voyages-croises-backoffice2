@@ -50,11 +50,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.miniature {
-  width: 65px;
-  height: 65px;
-  border-radius: 15px;
-}
 .card-article {
   cursor: pointer;
   background-color: #fff;
@@ -63,10 +58,5 @@ export default {
   box-shadow: lightgrey 0px 1px 2px 0px;
   margin-bottom: 15px;
   padding: 5px 12px;
-}
-@media (min-width: 992px) {
-  .miniature {
-    width: 130px;
-  }
 }
 </style>

@@ -11,7 +11,7 @@
         class="col-md-6"
       >
         <div class="card-article d-flex align-items-center">
-          <div class="bg-image miniature img-accueil"></div>
+          <div class="bg-image miniature" :style="getImage(page.id)"></div>
           <div class="ms-2 fw-bold">{{ page.name }}</div>
           <div class="flex-grow-1"></div>
           <div>
@@ -48,75 +48,26 @@ export default {
       pages: [],
       formAddPage: false,
       page: {},
-      mainImage: { image: null, binary: null },
     };
   },
   async mounted() {
     this.loadPages();
   },
   methods: {
-    getImage() {
-      if (this.mainImage.binary)
-        return "background-image:url(" + this.mainImage.binary + ")";
-      else
-        return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${this.article.id}/image')`;
+    getImage(id) {
+      return `background-image:url('${process.env.VUE_APP_SERVER_URL}/pages/${id}/image')`;
     },
     async loadPages() {
       let response = await this.$axios.get(
         process.env.VUE_APP_SERVER_URL + "/admin/pages/list"
       );
-      console.log(response);
       this.pages = response.data;
     },
     editPage(page) {
-      console.log("page", page);
       this.$router.push("/admin/pages/" + page.id);
     },
     addPage() {
       this.formAddPage = true;
-    },
-    async savePage() {
-      let response = await this.$axios.post(
-        process.env.VUE_APP_SERVER_URL + "/admin/pages/add",
-        this.page
-      );
-      console.log(response);
-      if (this.mainImage.image) await this.saveImage();
-      this.formAddPage = false;
-      this.loadPages();
-    },
-    // image
-    fileJusteSelected($event) {
-      if (!$event.target.files.length) return;
-      this.mainImage.image = $event.target.files[0];
-      var reader = new FileReader();
-      var that = this;
-      reader.onload = (function () {
-        return function (e) {
-          that.mainImage.binary = e.target.result;
-        };
-      })($event.target.files[0]);
-      reader.readAsDataURL($event.target.files[0]);
-    },
-    async saveImage() {
-      console.log("je passe");
-      let file = this.mainImage.image;
-      if (!file) return;
-      let formData = new FormData();
-      formData.append("image", file, file.name);
-      await this.$axios.post(
-        process.env.VUE_APP_SERVER_URL +
-          "/admin/pages/" +
-          this.page.id +
-          "/image",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      this.mainImage = { image: null, binary: null };
     },
     async deletePage(page) {
       await this.$axios.delete(
@@ -133,20 +84,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.miniature {
-  width: 65px;
-  height: 65px;
-  border-radius: 15px;
-}
-.img-accueil {
-  background-image: url("/img/loginfond.jpg");
-}
-.img-apropos {
-  background-image: url("/img/lionel2.jpg");
-}
-.img-contact {
-  background-image: url("/img/alexandre1.jpg");
-}
 .card-article {
   cursor: pointer;
   background-color: #fff;
@@ -168,10 +105,5 @@ export default {
   background-repeat: no-repeat;
   width: 100%;
   height: 230px;
-}
-@media (min-width: 992px) {
-  .miniature {
-    width: 130px;
-  }
 }
 </style>

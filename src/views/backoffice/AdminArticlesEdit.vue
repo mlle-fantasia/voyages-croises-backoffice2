@@ -184,7 +184,7 @@
               </label>
             </div>
           </div>
-          <div class="row d-flex">
+          <div class="">
             <button @click="saveArticle" class="btn btn-primary">
               Enregistrer
             </button>
@@ -227,6 +227,8 @@ export default {
         "indent",
         "outdent",
         "left",
+        "center",
+        "right",
         "|",
         "image",
         "video",
@@ -284,7 +286,7 @@ export default {
       reader.readAsDataURL($event.target.files[0]);
     },
     async saveImage() {
-      console.log("je passe");
+      console.log("je passe", this.article);
       let file = this.mainImage.image;
       if (!file) return;
       let formData = new FormData();
@@ -304,6 +306,24 @@ export default {
       this.mainImage = { image: null, binary: null };
     },
     async saveArticle() {
+      // champs obligatoires
+
+      if (
+        this.article.visible &&
+        (!this.article.date ||
+          !this.categorieSeleted.id ||
+          !this.article.title ||
+          !this.article.contenu)
+      ) {
+        this.$notify({
+          group: "message",
+          type: "error",
+          title: "Erreur",
+          text: "Vérifiez les champs obligatoires : date, catégorie, titre,  contenu ",
+        });
+        return;
+      }
+
       this.article.category = this.categorieSeleted.id;
       this.article.tags = this.tags;
       console.log("this.article", this.article);
@@ -327,13 +347,13 @@ export default {
           text: "une erreur s'est produite ",
         });
       } else {
+        this.article = response.data;
         this.$notify({
           group: "message",
           type: "success",
           title: "Confirmation",
           text: "Article bien entregistré!",
         });
-        console.log("this.mainImage", this.mainImage);
         if (this.mainImage.image) await this.saveImage();
       }
       this.$router.push("/admin/articles");

@@ -105,21 +105,10 @@
           <button @click="addComment" class="btn btn-primary">Commenter</button>
         </div>
         <div class="col-md-3">
-          <h5 class="text-center mb-0">A propos</h5>
-          <hr />
-          <router-link
-            class="nav-link"
-            :class="$route.name === 'About' ? 'active' : ''"
-            to="/apropos"
-          >
-            <img class="img-fluid" src="/img/propos.jpg" alt="" />
-          </router-link>
-          <p class="text-center">
-            Lionel et Alexandre, père et fils, sont passionnés de voyages et de
-            découvertes, ils partagent avec vous leur expérience
-          </p>
-          <h5 class="mt-4 text-center mb-0">Derniers articles</h5>
-          <hr />
+          <aside2
+            :lastArticles="lastArticles"
+            :textapropos="textapropos"
+          ></aside2>
         </div>
       </div>
     </div>
@@ -138,14 +127,23 @@ export default {
       newCommentaire: { text: "", email: "", name: "", title: "" },
       com_success: false,
       com_error: false,
+      textapropos: "",
+      lastArticles: [],
     };
   },
   async mounted() {
+    let params = {
+      aside: true,
+    };
     let response = await this.$axios.get(
-      process.env.VUE_APP_SERVER_URL + "/articles/" + this.$route.params.id
+      process.env.VUE_APP_SERVER_URL + "/articles/" + this.$route.params.id,
+      { params }
     );
     console.log(response);
     this.article = response.data.article;
+
+    this.textapropos = response.data.apropos.text;
+    this.lastArticles = response.data.lastarticles;
   },
   methods: {
     getImage() {

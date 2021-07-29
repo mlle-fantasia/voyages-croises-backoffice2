@@ -100,8 +100,8 @@ export default {
       process.env.VUE_APP_SERVER_URL + "/pages/" + this.$route.name
     );
     console.log(response);
-    this.page = response.data;
-    this.texts = response.data.texts;
+    this.page = response.data.page;
+    this.texts = response.data.page.texts;
     let maintext = this.texts.filter((text) => {
       return text.key === "Texte principal";
     });

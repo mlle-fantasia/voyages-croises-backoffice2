@@ -112,3 +112,21 @@ input:checked + .slider:before {
 .slider.round:before {
 	border-radius: 50%;
 }
+
+//// les images
+.miniature {
+	width: 65px;
+	height: 65px;
+	border-radius: 15px;
+}
+@media (min-width: 992px) {
+	.miniature {
+		width: 130px;
+	}
+}
+.img-header-page {
+	height: 50vh;
+	background-position: center;
+	background-size: cover;
+	background-repeat: no-repeat;
+}

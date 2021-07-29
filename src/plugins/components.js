@@ -8,6 +8,8 @@ import FooterPublic from "../components/templates/FooterPublic";
 Vue.component("footer-public", FooterPublic);
 import FormPage from "../views/backoffice/FormPage";
 Vue.component("form-page", FormPage);
+import Aside from "../views/Aside";
+Vue.component("aside2", Aside);
 
 /// les composants
 import "jodit/build/jodit.min.css";

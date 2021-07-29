@@ -5,21 +5,17 @@
       <button class="btn btn-warning">Découvrir</button>
     </div>
     <div class="container-fluid bg-ocre">
-      <div class="container" v-html="textBienvenue">
-        <!--  <h2 class="mb-3">Voyages croisées le blog</h2>
-        <h3>Bienvenue !</h3>
-        <p class="px-5">
-          Ce blog de voyages regroupe les expériences de Lionel et Alexandre à
-          travers le monde. Tu trouvera peut-être de quoi t'aider à préparer ton
-          future voyage !
-        </p> -->
-      </div>
+      <div class="container" v-html="textBienvenue"></div>
     </div>
     <div class="container mt-5">
       <h2 class="text-center">Les derniers articles</h2>
       <hr />
       <div class="row my-5">
-        <div class="col-md-4" v-for="article in lastArticles" :key="article.id">
+        <div
+          class="col-md-4 mb-4"
+          v-for="article in lastArticles"
+          :key="article.id"
+        >
           <div class="card" @click="goArticle(article)">
             <img
               :src="getImage(article)"
@@ -47,20 +43,7 @@
     <div class="container-fluid bg-image bg-lio">
       <div class="container">
         <div class="row">
-          <div class="col-12 col-md-6 bg-white" v-html="presentationBlog">
-            <!--             <p>
-              Présentation du blog ... <br /><br />
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat. <br /><br />
-
-              Duis aute irure dolor in reprehenderit in voluptate velit esse
-              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-              cupidatat non proident, sunt in culpa qui officia deserunt mollit
-              anim id est laborum."<br />
-            </p> -->
-          </div>
+          <div class="col-12 col-md-6 bg-white" v-html="presentationBlog"></div>
         </div>
       </div>
     </div>
@@ -89,7 +72,7 @@ export default {
   async mounted() {
     // get les trois derniers articles
     let query = {
-      limit: 3,
+      page: "home",
     };
     let response = await this.$axios.get(
       process.env.VUE_APP_SERVER_URL + "/articles/list",
@@ -102,7 +85,7 @@ export default {
     let response2 = await this.$axios.get(
       process.env.VUE_APP_SERVER_URL + "/pages/" + this.$route.name
     );
-    this.texts = response2.data.texts;
+    this.texts = response2.data.page.texts;
     let textBienvenue = this.texts.filter((text) => {
       return text.key === "Texte de bienvenue";
     });

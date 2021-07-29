@@ -17,38 +17,10 @@
             {{ article.title }}
           </div>
           <div class="flex-grow-1"></div>
-          <div class="">oui</div>
+          <div v-if="article.visible" class="text-success">Visible</div>
+          <div v-else class="text-danger">Invisible</div>
         </div>
       </div>
-      <!-- <table class="table table-striped table-hover">
-        <thead>
-          <tr>
-            <th scope="col" style="width: 150px">Image</th>
-            <th scope="col">Titre</th>
-            <th scope="col">Date</th>
-            <th scope="col">Visible</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="article in articles"
-            :key="article.id"
-            class="article-line"
-            @click="editArticles(article.id)"
-          >
-            <td>
-              <div
-                v-if="article.image"
-                class="bg-image miniature"
-                :style="getImage(article)"
-              ></div>
-            </td>
-            <td>{{ article.title }}</td>
-            <td>{{ article.date }}</td>
-            <td>{{ article.visible | formatBoolean }}</td>
-          </tr>
-        </tbody>
-      </table> -->
     </div>
   </div>
 </template>

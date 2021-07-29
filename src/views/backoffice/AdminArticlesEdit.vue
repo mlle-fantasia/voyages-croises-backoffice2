@@ -188,10 +188,19 @@
             <button @click="saveArticle" class="btn btn-primary">
               Enregistrer
             </button>
+            <button @click="deleteArticle" class="btn btn-danger ms-2">
+              Supprimer
+            </button>
           </div>
         </div>
       </div>
     </div>
+    <modal-confirm
+      v-model="deleteConfirm"
+      :text="`Voulez-vous supprimer cet article : ${article.title} ?`"
+      @canceled="deleteConfirm = false"
+      @confirmed="deleteArticleConfirmed"
+    ></modal-confirm>
   </div>
 </template>
 
@@ -202,6 +211,7 @@ export default {
   data() {
     return {
       article: {},
+      deleteConfirm: false,
       mainImage: { image: null, binary: null },
       categories: [],
       categorieSeleted: {},
@@ -307,7 +317,6 @@ export default {
     },
     async saveArticle() {
       // champs obligatoires
-
       if (
         this.article.visible &&
         (!this.article.date ||
@@ -326,7 +335,6 @@ export default {
 
       this.article.category = this.categorieSeleted.id;
       this.article.tags = this.tags;
-      console.log("this.article", this.article);
       let response;
       if (this.article.id) {
         response = await this.$axios.put(
@@ -356,6 +364,17 @@ export default {
         });
         if (this.mainImage.image) await this.saveImage();
       }
+      this.$router.push("/admin/articles");
+    },
+    deleteArticle() {
+      this.deleteConfirm = true;
+    },
+    async deleteArticleConfirmed() {
+      await this.$axios.delete(
+        process.env.VUE_APP_SERVER_URL + "/admin/articles/" + this.article.id,
+        this.article
+      );
+      this.deleteConfirm = false;
       this.$router.push("/admin/articles");
     },
   },

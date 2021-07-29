@@ -10,6 +10,8 @@ import FormPage from "../views/backoffice/FormPage";
 Vue.component("form-page", FormPage);
 import Aside from "../views/Aside";
 Vue.component("aside2", Aside);
+import ModalConfirm from "../views/backoffice/ModalConfirm";
+Vue.component("modal-confirm", ModalConfirm);
 
 /// les composants
 import "jodit/build/jodit.min.css";

@@ -14,14 +14,6 @@
           <div class="bg-image miniature" :style="getImage(page.id)"></div>
           <div class="ms-2 fw-bold">{{ page.name }}</div>
           <div class="flex-grow-1"></div>
-          <div>
-            <button
-              @click.stop="deletePage(page)"
-              class="btn btn-danger btn-sm"
-            >
-              Supprimer
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -68,13 +60,6 @@ export default {
     },
     addPage() {
       this.formAddPage = true;
-    },
-    async deletePage(page) {
-      await this.$axios.delete(
-        process.env.VUE_APP_SERVER_URL + "/admin/pages/delete/" + page.id
-      );
-      this.loadPages();
-      //console.log("response", response);
     },
     pageSaved() {
       this.formAddPage = false;

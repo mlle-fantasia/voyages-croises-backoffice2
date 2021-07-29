@@ -75,7 +75,16 @@
     </div>
     <div>
       <button @click="savePage" class="btn btn-warning">Enregistrer</button>
+      <button v-if="page.id" @click="deletePage" class="btn btn-danger ms-2">
+        Supprimer
+      </button>
     </div>
+    <modal-confirm
+      v-model="deleteConfirm"
+      :text="`Voulez-vous supprimer cette page : ${page.name}  avec tous ses textes ?`"
+      @canceled="deleteConfirm = false"
+      @confirmed="deletePageConfirmed"
+    ></modal-confirm>
   </div>
 </template>
 
@@ -91,6 +100,7 @@ export default {
   data() {
     return {
       page: {},
+      deleteConfirm: false,
       mainImage: { image: null, binary: null },
     };
   },
@@ -184,6 +194,16 @@ export default {
         }
       );
       this.mainImage = { image: null, binary: null };
+    },
+    deletePage() {
+      this.deleteConfirm = true;
+    },
+    async deletePageConfirmed() {
+      await this.$axios.delete(
+        process.env.VUE_APP_SERVER_URL + "/admin/pages/delete/" + this.page.id
+      );
+      this.deleteConfirm = false;
+      this.$router.push("/admin/pages");
     },
   },
 };

@@ -16,6 +16,8 @@ import AdminArticlesEdit from "../views/backoffice/AdminArticlesEdit.vue";
 import AdminPages from "../views/backoffice/AdminPages.vue";
 import AdminUsers from "../views/backoffice/AdminUsers.vue";
 import AdminUsersEdit from "../views/backoffice/AdminUsersEdit.vue";
+import AdminComments from "../views/backoffice/AdminComments.vue";
+
 ////// les pages
 import AdminPageEdit from "../views/backoffice/AdminPageEdit.vue";
 
@@ -58,6 +60,11 @@ const routes = [
 		path: "/admin/home",
 		name: "AdminHome",
 		component: AdminHome,
+	},
+	{
+		path: "/admin/comments",
+		name: "AdminComments",
+		component: AdminComments,
 	},
 	{
 		path: "/admin/users",
@@ -109,6 +116,7 @@ router.beforeEach(async (to, from, next) => {
 			let response = await axios.post(process.env.VUE_APP_SERVER_URL + "/autologin", {
 				token: token,
 			});
+			//if (response.status === 401) return next({ path: "/admin" });
 			if (response.data.err) {
 				return false;
 			}

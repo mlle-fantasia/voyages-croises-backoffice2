@@ -19,11 +19,7 @@
           <div v-if="article.comments.length">
             <div class="row" v-for="com in article.comments" :key="com.id">
               <div class="col-md-2">
-                <img
-                  class="img-fluid"
-                  :src="`/img/imgcomments/comment${com.image}.jpg`"
-                  alt=""
-                />
+                <img class="img-fluid" :src="getImageComment(com)" alt="" />
               </div>
               <div class="col-md-10">
                 <p>
@@ -32,6 +28,7 @@
                 </p>
                 <h6>{{ com.title }}</h6>
                 <p>{{ com.contenu }}</p>
+                <div>{{ com.siteweb }}</div>
               </div>
             </div>
           </div>
@@ -41,32 +38,22 @@
             Si vous avez aimé cette article, vous pouvez nous laisser un
             commentaire
           </h5>
-          <div class="mb-3">
-            <label class="form-label" for="title">Titre</label>
-            <br />
-            <input
-              class="form-control"
-              name="title"
-              id="title"
-              v-model="newCommentaire.title"
-              type="text"
-            />
-          </div>
-          <div>
-            <label for="newCommentaire">Commentaire *</label>
-            <textarea
-              class="form-control mb-3"
-              name="newCommentaire"
-              id="newCommentaire"
-              v-model="newCommentaire.text"
-              type="textarea"
-              rows="6"
-            >
-            </textarea>
-          </div>
-          <div class="row">
+          <div class="row mb-3">
             <div class="col-md-6">
-              <div class="mb-3">
+              <div class="">
+                <label class="form-label" for="title">Titre</label>
+                <br />
+                <input
+                  class="form-control"
+                  name="title"
+                  id="title"
+                  v-model="newCommentaire.title"
+                  type="text"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="">
                 <label class="form-label" for="name">Votre nom *</label>
                 <br />
                 <input
@@ -78,8 +65,22 @@
                 />
               </div>
             </div>
+          </div>
+          <div>
+            <label for="newCommentaire">Commentaire *</label>
+            <textarea
+              class="form-control mb-3"
+              name="newCommentaire"
+              id="newCommentaire"
+              v-model="newCommentaire.contenu"
+              type="textarea"
+              rows="6"
+            >
+            </textarea>
+          </div>
+          <div class="row mb-3">
             <div class="col-md-6">
-              <div class="mb-3">
+              <div class="">
                 <label class="form-label" for="email"
                   >Votre adresse email *</label
                 >
@@ -94,13 +95,30 @@
                 <small>Votre adresse email ne sera pas publiée</small>
               </div>
             </div>
+            <div class="col-md-6">
+              <div class="">
+                <label class="form-label" for="name">Site web</label>
+                <br />
+                <input
+                  class="form-control"
+                  name="name"
+                  id="name"
+                  v-model="newCommentaire.siteweb"
+                  type="text"
+                />
+              </div>
+            </div>
           </div>
           <div class="alert alert-success" v-if="com_success">
             Votre commentaire à bien été envoyé, il sera publié une fois vérifié
-            par l'administrateur du site
+            par l'administrateur du site.
           </div>
           <div class="alert alert-danger" v-if="com_error">
-            Attention, un des champs obligatoire est manquant
+            Attention, un des champs obligatoire est manquant.
+          </div>
+          <div class="alert alert-danger" v-if="com_backend_error">
+            Nous sommes désolés, une erreur s'est produite, veillez réesseyer
+            plus tard.
           </div>
           <button @click="addComment" class="btn btn-primary">Commenter</button>
         </div>
@@ -124,9 +142,16 @@ export default {
   data() {
     return {
       article: {},
-      newCommentaire: { text: "", email: "", name: "", title: "" },
+      newCommentaire: {
+        contenu: "",
+        email: "",
+        name: "",
+        title: "",
+        siteweb: "",
+      },
       com_success: false,
       com_error: false,
+      com_backend_error: false,
       textapropos: "",
       lastArticles: [],
     };
@@ -146,14 +171,19 @@ export default {
     this.lastArticles = response.data.lastarticles;
   },
   methods: {
+    getImageComment(comment) {
+      //return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${article.id}/image')`;
+      return `${process.env.VUE_APP_SERVER_URL}/comment/${comment.id}/image`;
+    },
     getImage() {
       return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${this.article.id}/image')`;
     },
     async addComment() {
       this.com_error = false;
       this.com_success = false;
+      this.com_backend_error = false;
       if (
-        !this.newCommentaire.text ||
+        !this.newCommentaire.contenu ||
         !this.newCommentaire.name ||
         !this.newCommentaire.email
       )
@@ -167,6 +197,19 @@ export default {
           this.newCommentaire
         );
         console.log(response);
+        if (response.status !== 200) {
+          this.com_backend_error = true;
+        } else {
+          this.com_success = true;
+          // reset comment
+          this.newCommentaire = {
+            contenu: "",
+            email: "",
+            name: "",
+            title: "",
+            siteweb: "",
+          };
+        }
       }
     },
   },

@@ -195,6 +195,13 @@
         </div>
       </div>
     </div>
+    <!--     <div class="row">
+      <div class="col-md-12">
+         <h5>Les commentaires de l'article</h5>
+         <div v-for="com in article.comments" :key="com.id">
+         </div>
+      </div>
+    </div> -->
     <modal-confirm
       v-model="deleteConfirm"
       :text="`Voulez-vous supprimer cet article : ${article.title} ?`"

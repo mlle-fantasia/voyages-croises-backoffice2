@@ -42,8 +42,8 @@
             <router-link
               class="nav-link"
               :class="$route.name === 'AdminHome' ? 'active' : ''"
-              to="/admin/home"
-              >Les catégories</router-link
+              to="/admin/comments"
+              >Les commentaires</router-link
             >
           </li>
           <li class="nav-item">

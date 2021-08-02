@@ -22,12 +22,14 @@
           <div>
             <span class="fw-bold">Article :</span> {{ com.articles.title }}
           </div>
-          <button @click="hideOrShow(com)" class="btn btn-success btn-sm">
-            {{ com.visible ? "Masquer" : "Publier" }}
-          </button>
-          <button @click="deleteCom(com)" class="btn btn-danger btn-sm ms-2">
-            Supprimer
-          </button>
+          <div class="mt-2">
+            <button @click="hideOrShow(com)" class="btn btn-success btn-sm">
+              Publier
+            </button>
+            <button @click="deleteCom(com)" class="btn btn-danger btn-sm ms-2">
+              Supprimer
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -109,16 +111,19 @@ export default {
     };
   },
   async mounted() {
-    let response = await this.$axios.get(
-      process.env.VUE_APP_SERVER_URL + "/admin/comments"
-    );
-    console.log(response);
-    this.commentsNotVisible = response.data.notVisible;
-    this.articlesComment = response.data.allComments;
+    this.loadComment();
   },
   methods: {
     getImage(article) {
       return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${article.id}/image')`;
+    },
+    async loadComment() {
+      let response = await this.$axios.get(
+        process.env.VUE_APP_SERVER_URL + "/admin/comments"
+      );
+      console.log(response);
+      this.commentsNotVisible = response.data.notVisible;
+      this.articlesComment = response.data.allComments;
     },
     hideOrShowAllComment(articleId) {
       return this.showAllComment === articleId;
@@ -132,11 +137,13 @@ export default {
         process.env.VUE_APP_SERVER_URL + "/admin/comments/" + comment.id,
         { visible: !comment.visible }
       );
+      this.loadComment();
     },
     async deleteCom(comment) {
       await this.$axios.delete(
         process.env.VUE_APP_SERVER_URL + "/admin/comments/" + comment.id
       );
+      this.loadComment();
     },
   },
 };

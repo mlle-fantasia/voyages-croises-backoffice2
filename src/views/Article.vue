@@ -18,17 +18,29 @@
           <hr />
           <div v-if="article.comments.length">
             <div class="row" v-for="com in article.comments" :key="com.id">
-              <div class="col-md-2">
-                <img class="img-fluid" :src="getImageComment(com)" alt="" />
+              <div class="col-2 text-center">
+                <img
+                  class="img-fluid img-comment"
+                  :src="getImageComment(com)"
+                  alt=""
+                />
               </div>
-              <div class="col-md-10">
-                <p>
+              <div class="col-10 comment">
+                <p class="mb-1">
                   <span class="fw-bold">{{ com.name }}</span> le
-                  {{ com.createdAt | formatDateTime }}
+                  <span class="fs-6">{{ com.createdAt | formatDateTime }}</span>
+                  <span
+                    @click="showRresponseComment(com)"
+                    class="cursor-pointer fw-bold ms-2"
+                    >Répondre</span
+                  >
                 </p>
-                <h6>{{ com.title }}</h6>
-                <p>{{ com.contenu }}</p>
-                <div>{{ com.siteweb }}</div>
+                <h6 class="mb-0">{{ com.title }}</h6>
+                <p class="mb-0">{{ com.contenu }}</p>
+                <a class="mb-1" :href="com.siteweb" target="banck">{{
+                  com.siteweb
+                }}</a>
+                <div class="form-response" v-if="showFormResponse"></div>
               </div>
             </div>
           </div>
@@ -154,30 +166,45 @@ export default {
       com_backend_error: false,
       textapropos: "",
       lastArticles: [],
+      showFormResponse: false,
+      commentToResponse: {},
     };
   },
+  watch: {
+    $route() {
+      this.loadArticle(false);
+    },
+  },
   async mounted() {
-    let params = {
-      aside: true,
-    };
-    let response = await this.$axios.get(
-      process.env.VUE_APP_SERVER_URL + "/articles/" + this.$route.params.id,
-      { params }
-    );
-    console.log(response);
-    this.article = response.data.article;
-
-    this.textapropos = response.data.apropos.text;
-    this.lastArticles = response.data.lastarticles;
+    this.loadArticle(true);
   },
   methods: {
     getImageComment(comment) {
       //return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${article.id}/image')`;
-      return `${process.env.VUE_APP_SERVER_URL}/comment/${comment.id}/image`;
+      return `${process.env.VUE_APP_SERVER_URL}/comments/${comment.id}/image`;
     },
     getImage() {
       return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${this.article.id}/image')`;
     },
+    async loadArticle(withAside) {
+      let params = {
+        aside: withAside,
+      };
+      let response = await this.$axios.get(
+        process.env.VUE_APP_SERVER_URL + "/articles/" + this.$route.params.id,
+        { params }
+      );
+      console.log(response);
+      this.article = response.data.article;
+
+      this.textapropos = response.data.apropos.text;
+      this.lastArticles = response.data.lastarticles;
+    },
+    showRresponseComment(comment) {
+      this.showFormResponse = true;
+      this.commentToResponse = comment;
+    },
+    async responseComment() {},
     async addComment() {
       this.com_error = false;
       this.com_success = false;
@@ -224,11 +251,20 @@ export default {
   margin-bottom: 60px;
   width: 100px;
 }
-
+.img-comment {
+  border-radius: 50%;
+  width: 100%;
+}
+.comment {
+  border-bottom: 1px solid #dddddd;
+}
 @media (min-width: 992px) {
   .logo {
     margin-bottom: 80px;
     width: 150px;
+  }
+  .img-comment {
+    width: 50%;
   }
 }
 </style>

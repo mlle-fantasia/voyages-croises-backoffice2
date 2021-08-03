@@ -42,12 +42,7 @@ export default {
     textapropos: String,
     lastArticles: Array,
   },
-  watch: {
-    textapropos() {
-      /*  console.log("coucou", this.textapropos);
-      this.$forceUpdate(); */
-    },
-  },
+  watch: {},
   data() {
     return {};
   },
@@ -56,6 +51,9 @@ export default {
     getImage(article) {
       //return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${article.id}/image')`;
       return `${process.env.VUE_APP_SERVER_URL}/articles/${article.id}/image`;
+    },
+    goArticle(article) {
+      this.$router.push("/article/" + article.id);
     },
   },
 };

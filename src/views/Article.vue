@@ -40,7 +40,16 @@
                 <a class="mb-1" :href="com.siteweb" target="banck">{{
                   com.siteweb
                 }}</a>
-                <div class="form-response" v-if="showFormResponse"></div>
+                <div
+                  class="form-response p-3 bg-light"
+                  v-if="showFormResponse && commentToResponse.id === com.id"
+                >
+                  <form-comment
+                    :articleId="article.id"
+                    :commentId="commentToResponse.id"
+                    @closeform="closeformResponse"
+                  ></form-comment>
+                </div>
               </div>
             </div>
           </div>
@@ -50,89 +59,8 @@
             Si vous avez aimé cette article, vous pouvez nous laisser un
             commentaire
           </h5>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <div class="">
-                <label class="form-label" for="title">Titre</label>
-                <br />
-                <input
-                  class="form-control"
-                  name="title"
-                  id="title"
-                  v-model="newCommentaire.title"
-                  type="text"
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="">
-                <label class="form-label" for="name">Votre nom *</label>
-                <br />
-                <input
-                  class="form-control"
-                  name="name"
-                  id="name"
-                  v-model="newCommentaire.name"
-                  type="text"
-                />
-              </div>
-            </div>
-          </div>
-          <div>
-            <label for="newCommentaire">Commentaire *</label>
-            <textarea
-              class="form-control mb-3"
-              name="newCommentaire"
-              id="newCommentaire"
-              v-model="newCommentaire.contenu"
-              type="textarea"
-              rows="6"
-            >
-            </textarea>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <div class="">
-                <label class="form-label" for="email"
-                  >Votre adresse email *</label
-                >
-                <br />
-                <input
-                  class="form-control"
-                  name="email"
-                  id="email"
-                  v-model="newCommentaire.email"
-                  type="text"
-                />
-                <small>Votre adresse email ne sera pas publiée</small>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="">
-                <label class="form-label" for="name">Site web</label>
-                <br />
-                <input
-                  class="form-control"
-                  name="name"
-                  id="name"
-                  v-model="newCommentaire.siteweb"
-                  type="text"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="alert alert-success" v-if="com_success">
-            Votre commentaire à bien été envoyé, il sera publié une fois vérifié
-            par l'administrateur du site.
-          </div>
-          <div class="alert alert-danger" v-if="com_error">
-            Attention, un des champs obligatoire est manquant.
-          </div>
-          <div class="alert alert-danger" v-if="com_backend_error">
-            Nous sommes désolés, une erreur s'est produite, veillez réesseyer
-            plus tard.
-          </div>
-          <button @click="addComment" class="btn btn-primary">Commenter</button>
+
+          <form-comment :articleId="article.id"></form-comment>
         </div>
         <div class="col-md-3">
           <aside2
@@ -154,16 +82,6 @@ export default {
   data() {
     return {
       article: {},
-      newCommentaire: {
-        contenu: "",
-        email: "",
-        name: "",
-        title: "",
-        siteweb: "",
-      },
-      com_success: false,
-      com_error: false,
-      com_backend_error: false,
       textapropos: "",
       lastArticles: [],
       showFormResponse: false,
@@ -204,40 +122,9 @@ export default {
       this.showFormResponse = true;
       this.commentToResponse = comment;
     },
-    async responseComment() {},
-    async addComment() {
-      this.com_error = false;
-      this.com_success = false;
-      this.com_backend_error = false;
-      if (
-        !this.newCommentaire.contenu ||
-        !this.newCommentaire.name ||
-        !this.newCommentaire.email
-      )
-        this.com_error = true;
-      else {
-        let response = await this.$axios.put(
-          process.env.VUE_APP_SERVER_URL +
-            "/articles/" +
-            this.$route.params.id +
-            "/newcomment",
-          this.newCommentaire
-        );
-        console.log(response);
-        if (response.status !== 200) {
-          this.com_backend_error = true;
-        } else {
-          this.com_success = true;
-          // reset comment
-          this.newCommentaire = {
-            contenu: "",
-            email: "",
-            name: "",
-            title: "",
-            siteweb: "",
-          };
-        }
-      }
+    closeformResponse() {
+      this.showFormResponse = false;
+      this.commentToResponse = {};
     },
   },
 };

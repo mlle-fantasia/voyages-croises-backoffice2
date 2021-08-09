@@ -33,6 +33,86 @@
         </div>
       </div>
     </div>
+    <h5>{{ responsesNotVisible.length }} réponses non publiées</h5>
+    <div class="row">
+      <div
+        class="col-md-12 col-lg-6"
+        v-for="response in responsesNotVisible"
+        :key="response.id"
+      >
+        <div class="card-comment">
+          <div><span class="fw-bold">Nom :</span> {{ response.name }}</div>
+          <div><span class="fw-bold">Email :</span> {{ response.email }}</div>
+          <div>
+            <span class="fw-bold">Commentaire :</span> {{ response.contenu }}
+          </div>
+          <div>
+            <span class="fw-bold">Date :</span>
+            {{ response.createdAt | formatDate }}
+          </div>
+          <div>
+            <span class="fw-bold">Article :</span>
+            {{ response.comment.articles.title }}
+          </div>
+          <div class="mt-2">
+            <button
+              @click="showCommentaireInResponse(response)"
+              class="btn btn-warning btn-sm"
+            >
+              Voir le commentaire
+            </button>
+            <button
+              @click="hideOrShowResponse(response)"
+              class="btn btn-success btn-sm ms-2"
+            >
+              Publier
+            </button>
+            <button
+              @click="hideOrShowResponse(response)"
+              class="btn btn-danger btn-sm ms-2"
+            >
+              Supprimer
+            </button>
+          </div>
+          <div
+            v-if="
+              commentaireInResponseToShow &&
+              commentaireInResponseToShow.id === response.id
+            "
+          >
+            <hr />
+            <div>
+              <div>
+                <span class="fw-bold">Nom :</span>
+                {{ commentaireInResponseToShow.comment.name }}
+              </div>
+              <div>
+                <span class="fw-bold">Date :</span>
+                {{ commentaireInResponseToShow.comment.createdAt | formatDate }}
+              </div>
+              <div>
+                <span class="fw-bold">commentaire :</span>
+                {{ commentaireInResponseToShow.comment.contenu }}
+              </div>
+            </div>
+            <div
+              class="ms-3"
+              v-for="response2 in commentaireInResponseToShow.comment.responses"
+              :key="response2.id"
+            >
+              <div><span class="fw-bold">Nom :</span> {{ response2.name }}</div>
+              <div>
+                <span class="fw-bold">Date :</span>
+                {{ response2.createdAt | formatDate }}
+              </div>
+              <div>
+                <span class="fw-bold">Réponse :</span> {{ response2.contenu }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <h5 class="mt-4">Tous les commentaires par article</h5>
     <div class="row">
       <div
@@ -106,12 +186,15 @@ export default {
   data() {
     return {
       commentsNotVisible: [],
+      responsesNotVisible: [],
       articlesComment: [],
+      commentaireInResponseToShow: {},
       showAllComment: 0,
     };
   },
   async mounted() {
     this.loadComment();
+    this.loadResponses();
   },
   methods: {
     getImage(article) {
@@ -124,6 +207,7 @@ export default {
       console.log(response);
       this.commentsNotVisible = response.data.notVisible;
       this.articlesComment = response.data.allComments;
+      this.responsesNotVisible = response.data.responsesNotVisible;
     },
     hideOrShowAllComment(articleId) {
       return this.showAllComment === articleId;
@@ -138,6 +222,18 @@ export default {
         { visible: !comment.visible }
       );
       this.loadComment();
+    },
+    async hideOrShowResponse(response) {
+      await this.$axios.put(
+        process.env.VUE_APP_SERVER_URL +
+          "/admin/CommentsResponses/" +
+          response.id,
+        { visible: !response.visible }
+      );
+      this.loadComment();
+    },
+    showCommentaireInResponse(response) {
+      this.commentaireInResponseToShow = response;
     },
     async deleteCom(comment) {
       await this.$axios.delete(

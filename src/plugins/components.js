@@ -12,6 +12,8 @@ import Aside from "../views/Aside";
 Vue.component("aside2", Aside);
 import ModalConfirm from "../views/backoffice/ModalConfirm";
 Vue.component("modal-confirm", ModalConfirm);
+import FormComment from "../views/FormComment";
+Vue.component("form-comment", FormComment);
 
 /// les composants
 import "jodit/build/jodit.min.css";

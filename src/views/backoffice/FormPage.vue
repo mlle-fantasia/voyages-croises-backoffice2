@@ -75,7 +75,11 @@
     </div>
     <div>
       <button @click="savePage" class="btn btn-warning">Enregistrer</button>
-      <button v-if="page.id" @click="deletePage" class="btn btn-danger ms-2">
+      <button
+        v-if="page.id && $store.state.user.type === 'superadmin'"
+        @click="deletePage"
+        class="btn btn-danger ms-2"
+      >
         Supprimer
       </button>
     </div>

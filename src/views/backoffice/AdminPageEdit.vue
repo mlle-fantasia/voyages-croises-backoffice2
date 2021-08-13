@@ -34,7 +34,11 @@
     <div class="row mt-3">
       <div class="col-md-12">
         <button @click="saveTextes" class="btn btn-success">Enregistrer</button>
-        <button @click="formAddText" class="btn btn-primary ms-2">
+        <button
+          v-if="$store.state.user.type === 'superadmin'"
+          @click="formAddText"
+          class="btn btn-primary ms-2"
+        >
           Ajouter un texte
         </button>
       </div>

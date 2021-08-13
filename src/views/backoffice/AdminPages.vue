@@ -17,7 +17,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row" v-if="$store.state.user.type === 'superadmin'">
       <div class="col-md-12">
         <button @click="addPage" class="btn btn-warning">Nouvelle page</button>
       </div>

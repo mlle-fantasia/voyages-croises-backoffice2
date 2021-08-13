@@ -2,7 +2,13 @@
   <div class="admin-articles">
     <div class="d-flex align-items-center">
       <h2>Les utilisateurs</h2>
-      <button @click="addUser" class="btn btn-warning ms-5">Nouveau</button>
+      <button
+        v-if="$store.state.user.type === 'superadmin'"
+        @click="addUser"
+        class="btn btn-warning ms-5"
+      >
+        Nouveau
+      </button>
     </div>
     <div class="row articles-list mt-3">
       <div

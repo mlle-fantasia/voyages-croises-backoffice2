@@ -9,6 +9,20 @@ export default new Vuex.Store({
 		connected: false,
 		accesstoken: "",
 		user: {},
+		items_userstype: [
+			{
+				text: "Editeur",
+				value: "editeur",
+			},
+			{
+				text: "Administrateur",
+				value: "admin",
+			},
+			{
+				text: "Super adminnistrateur",
+				value: "superadmin",
+			},
+		],
 	},
 	mutations: {
 		set_connexion(state, what) {

@@ -21,6 +21,15 @@
               />
             </div>
             <div class="mb-3">
+              <label class="form-label" for="">Type</label>
+              <v-select
+                v-model="user.type"
+                :options="$store.state.items_userstype"
+                label="text"
+                :disabled="$store.state.user.type != 'superadmin'"
+              ></v-select>
+            </div>
+            <div class="mb-3">
               <label class="form-label" for="title">Date de naissance</label>
               <br />
               <input

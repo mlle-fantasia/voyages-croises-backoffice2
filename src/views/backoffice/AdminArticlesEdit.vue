@@ -164,10 +164,7 @@
                       type="text"
                     />
                   </div>
-                  <button
-                    @click="addSubCategorie"
-                    class="btn btn-sm btn-primary mt-2"
-                  >
+                  <button @click="addTag" class="btn btn-sm btn-primary mt-2">
                     Ajouter
                   </button>
                 </div>
@@ -265,17 +262,7 @@ export default {
     };
   },
   async mounted() {
-    let response = await this.$axios.get(
-      process.env.VUE_APP_SERVER_URL +
-        "/admin/articles/" +
-        this.$route.params.id
-    );
-    console.log(response);
-    this.article = response.data.article;
-    this.categorieSeleted = this.article.category;
-    this.tagsSeleted = this.article.tags;
-    this.categories = response.data.categories;
-    this.tags = response.data.tags;
+    this.loadArticles();
   },
   watch: {},
   methods: {
@@ -285,11 +272,70 @@ export default {
       else
         return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${this.article.id}/image')`;
     },
+    async loadArticles() {
+      let response = await this.$axios.get(
+        process.env.VUE_APP_SERVER_URL +
+          "/admin/articles/" +
+          this.$route.params.id
+      );
+      console.log(response);
+      this.article = response.data.article;
+      this.categorieSeleted = this.article.category;
+      this.tagsSeleted = this.article.tags;
+      this.categories = response.data.categories;
+      this.tags = response.data.tags;
+    },
     /*     inputTag(val) {
       console.log("val", val);
     }, */
-    addSubCategorie() {},
-    addCategorie() {},
+    async addTag() {
+      let response = await this.$axios.post(
+        process.env.VUE_APP_SERVER_URL + "/admin/tag/add",
+        this.newTag
+      );
+      if (response.status !== 200) {
+        this.$notify({
+          group: "message",
+          type: "error",
+          title: "Erreur",
+          text: "une erreur s'est produite ",
+        });
+      } else {
+        this.$notify({
+          group: "message",
+          type: "success",
+          title: "Confirmation",
+          text: "tag ajoutée!",
+        });
+        this.loadArticles();
+        this.formAddTag = false;
+        this.newTag = { text: "", value: "" };
+      }
+    },
+    async addCategorie() {
+      let response = await this.$axios.post(
+        process.env.VUE_APP_SERVER_URL + "/admin/categories/add",
+        this.newCaterory
+      );
+      if (response.status !== 200) {
+        this.$notify({
+          group: "message",
+          type: "error",
+          title: "Erreur",
+          text: "une erreur s'est produite ",
+        });
+      } else {
+        this.$notify({
+          group: "message",
+          type: "success",
+          title: "Confirmation",
+          text: "Catégorie ajoutée!",
+        });
+        this.loadArticles();
+        this.formAddCategorie = false;
+        this.newCaterory = { text: "", value: "" };
+      }
+    },
     fileJusteSelected($event) {
       if (!$event.target.files.length) return;
       this.mainImage.image = $event.target.files[0];

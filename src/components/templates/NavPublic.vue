@@ -39,16 +39,14 @@
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
-              Destinations
+              Catégories
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">France</a></li>
-              <li><a class="dropdown-item" href="#">Europe</a></li>
-              <li><a class="dropdown-item" href="#">Afrique</a></li>
-              <li><a class="dropdown-item" href="#">Asie</a></li>
-              <li><a class="dropdown-item" href="#">Océanie</a></li>
-              <li><a class="dropdown-item" href="#">Amérique du sud</a></li>
-              <li><a class="dropdown-item" href="#">Amérique du nord</a></li>
+              <li v-for="cat in categories" :key="cat.id">
+                <div class="dropdown-item" @click="goSearch(cat.value)">
+                  {{ cat.text }}
+                </div>
+              </li>
             </ul>
           </li>
           <li class="nav-item">
@@ -84,14 +82,22 @@ export default {
   data() {
     return {
       search: "",
+      categories: [],
     };
   },
-  async mounted() {},
+  async mounted() {
+    let response = await this.$axios.get(
+      process.env.VUE_APP_SERVER_URL + "/categories"
+    );
+    this.categories = response.data;
+  },
   methods: {
     goVoyageurs() {
       //this.$emit("goVoyageurs");
     },
-    goSearch() {},
+    goSearch(cat) {
+      this.$router.push("/articles/categories/" + cat);
+    },
   },
 };
 </script>

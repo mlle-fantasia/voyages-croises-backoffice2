@@ -14,8 +14,10 @@ import ModalConfirm from "../views/backoffice/ModalConfirm";
 Vue.component("modal-confirm", ModalConfirm);
 import FormComment from "../views/FormComment";
 Vue.component("form-comment", FormComment);
+import CardArticle from "../components/CardArticle";
+Vue.component("card-article", CardArticle);
 
-/// les composants
+/// les composants externes
 import "jodit/build/jodit.min.css";
 import { JoditEditor } from "jodit-vue";
 Vue.component("jodit-editor", JoditEditor);

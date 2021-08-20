@@ -7,6 +7,7 @@ const axios = require("axios");
 import Home from "../views/Home.vue";
 import Contact from "../views/Contact.vue";
 import Article from "../views/Article.vue";
+import Articles from "../views/Articles.vue";
 import About from "../views/About.vue";
 //// backoffice
 import Login from "../views/backoffice/Login.vue";
@@ -46,6 +47,12 @@ const routes = [
 		path: "/article/:id",
 		name: "article",
 		component: Article,
+		meta: { public: true },
+	},
+	{
+		path: "/articles/categories/:key",
+		name: "articleSearch",
+		component: Articles,
 		meta: { public: true },
 	},
 

@@ -7,6 +7,7 @@
         <div class="col-md-4">
           <div><router-link to="/">Mentions légales</router-link></div>
           <div><router-link to="/about">Plan du site</router-link></div>
+          <div><router-link to="/admin">Backoffice</router-link></div>
         </div>
       </div>
     </div>

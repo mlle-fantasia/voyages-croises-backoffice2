@@ -12,7 +12,7 @@
     </div>
     <div class="container-fluid bg-image bg-lio">
       <div class="container">
-        <div class="row">
+        <div class="row py-5">
           <div class="col-12 col-md-6 bg-white" v-html="descriptionlio"></div>
         </div>
       </div>
@@ -20,32 +20,16 @@
     <div class="container-fluid bg-ocre">
       <div class="container">
         <div class="row d-flex align-items-center">
-          <div class="col-12 col-md-6" v-html="questionslio">
-            <!-- <p>
-              <span class="fw-bold">Prénom :</span><br />
-              Lionel <br />
-              <span class="fw-bold">Age :</span> <br />56 ans <br /><br />
-              <span class="fw-bold">Premier voyage :</span> <br />
-              la bas en 2012 avec des potes <br />
-              <br />
-              <span class="fw-bold">Destination préférée :</span> <br />
-              ici
-              <br />
-              <br />
-              <span class="fw-bold">Ce que je préfère pendant un voyage :</span>
-              <br />
-              blablabla
-            </p> -->
-          </div>
-          <div class="col-12 col-md-6">
-            <img class="img-fluid" src="/img/lionel2.jpg" alt="" />
+          <div class="col-12 col-md-6" v-html="questionslio"></div>
+          <div class="col-12 col-md-6 p-5">
+            <img class="img-fluid img-question" src="/img/lionel2.jpg" alt="" />
           </div>
         </div>
       </div>
     </div>
     <div class="container-fluid bg-image bg-alex">
       <div class="container">
-        <div class="row">
+        <div class="row py-5">
           <div class="col-12 col-md-6 bg-white" v-html="descriptionalex"></div>
         </div>
       </div>
@@ -53,24 +37,13 @@
     <div class="container-fluid bg-ocre">
       <div class="container">
         <div class="row d-flex align-items-center">
-          <div class="col-12 col-md-6 text-center" v-html="questionslio">
-            <!--  <p>
-              <span class="fw-bold">Prénom :</span><br />
-              Alexandre <br />
-              <span class="fw-bold">Age :</span> <br />29 ans <br /><br />
-              <span class="fw-bold">Premier voyage :</span> <br />
-              la bas en 2012 avec des potes <br />
-              <br />
-              <span class="fw-bold">Destination préférée :</span> <br />
-              ici <br />
-              <br />
-              <span class="fw-bold">Ce que je préfère pendant un voyage :</span>
-              <br />
-              blablabla
-            </p> -->
-          </div>
-          <div class="col-12 col-md-6">
-            <img class="img-fluid" src="/img/alexandre2.jpg" alt="" />
+          <div class="col-12 col-md-6 text-center" v-html="questionsalex"></div>
+          <div class="col-12 col-md-6 p-5">
+            <img
+              class="img-fluid img-question"
+              src="/img/alexandre2.jpg"
+              alt=""
+            />
           </div>
         </div>
       </div>
@@ -134,5 +107,8 @@ export default {
 <style lang="scss" scoped>
 .img-fluid {
   //max-width: 70%;
+}
+.img-question {
+  width: 75%;
 }
 </style>

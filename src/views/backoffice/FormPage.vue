@@ -116,7 +116,7 @@ export default {
       if (this.mainImage.binary)
         return "background-image:url(" + this.mainImage.binary + ")";
       else
-        return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${this.article.id}/image')`;
+        return `background-image:url('${process.env.VUE_APP_SERVER_URL}/pages/${this.page.id}/image')`;
     },
     async loadPage() {
       if (this.pageId) {

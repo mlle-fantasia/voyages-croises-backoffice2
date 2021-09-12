@@ -42,13 +42,13 @@ export default {
     }); */
   },
   watch: {
-    $route(to) {
+    $route() {
       if (!this.$refs.navPublic) return;
-      if (to.name === "Home") {
+      /* if (to.name === "Home") {
         this.$refs.navPublic.styles.position = "fixed";
       } else {
         this.$refs.navPublic.styles.position = "sticky";
-      }
+      } */
     },
   },
   methods: {

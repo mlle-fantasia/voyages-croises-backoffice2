@@ -77,7 +77,7 @@
               id="contenu"
               v-model="article.contenu"
               :buttons="buttons"
-              :insertImageAsBase64URI="true"
+              :config="{ uploader: { insertImageAsBase64URI: true } }"
             />
           </div>
           <div class="row mb-4">

@@ -41,6 +41,14 @@
           <li class="nav-item">
             <router-link
               class="nav-link"
+              :class="$route.name === 'AdminCategories' ? 'active' : ''"
+              to="/admin/categories"
+              >Les catégories</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
               :class="$route.name === 'AdminHome' ? 'active' : ''"
               to="/admin/comments"
               >Les commentaires</router-link

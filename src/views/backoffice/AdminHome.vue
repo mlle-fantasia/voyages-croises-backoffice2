@@ -20,9 +20,26 @@
         <h5>Dernier article publié sur le site</h5>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-2"></div>
-      <div class="col-md-2"></div>
+    <div class="row mt-4">
+      <h5>Quelques chiffres</h5>
+      <div class="col-md-2">
+        <div class="card-admin text-center">
+          <div class="h2">{{ nbArticle }}</div>
+          <div>articles visibles</div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card-admin text-center">
+          <div class="h2">{{ nbComVisible }}</div>
+          <div>Commentaires visibles</div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card-admin text-center">
+          <div class="h2">{{ nbComNotVisible }}</div>
+          <div>Commentaires à traiter</div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -46,6 +63,9 @@ export default {
     console.log(response);
     this.lastArticle = response.data.lastArticle;
     this.lastArticleUser = response.data.lastArticleUser;
+    this.nbArticle = response.data.nbArticle;
+    this.nbComVisible = response.data.nbComVisible;
+    this.nbComNotVisible = response.data.nbComNotVisible;
   },
   methods: {
     getImage(id) {

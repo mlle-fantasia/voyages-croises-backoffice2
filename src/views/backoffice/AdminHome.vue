@@ -35,9 +35,24 @@
         </div>
       </div>
       <div class="col-md-2">
-        <div class="card-admin text-center">
+        <div
+          class="card-admin text-center"
+          :class="nbComNotVisible > 0 ? 'comNotVisible' : ''"
+        >
           <div class="h2">{{ nbComNotVisible }}</div>
           <div>Commentaires à traiter</div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card-admin text-center">
+          <div class="h2">{{ nbCategories }}</div>
+          <div>catégories</div>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <div class="card-admin text-center">
+          <div class="h2">{{ nbTags }}</div>
+          <div>tags</div>
         </div>
       </div>
     </div>
@@ -66,6 +81,8 @@ export default {
     this.nbArticle = response.data.nbArticle;
     this.nbComVisible = response.data.nbComVisible;
     this.nbComNotVisible = response.data.nbComNotVisible;
+    this.nbCategories = response.data.nbCategories;
+    this.nbTags = response.data.nbTags;
   },
   methods: {
     getImage(id) {
@@ -74,3 +91,9 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.comNotVisible {
+  border: 1px solid #d65454;
+  box-shadow: #e0a7a7 0px 1px 8px 3px;
+}
+</style>

@@ -22,6 +22,10 @@ import FormPage from "../views/backoffice/FormPage";
 Vue.component("form-page", FormPage);
 import ModalConfirm from "../views/backoffice/ModalConfirm";
 Vue.component("modal-confirm", ModalConfirm);
+import LibraryImagesModal from "../views/backoffice/LibraryImagesModal";
+Vue.component("modal-library-images", LibraryImagesModal);
+import LibraryImages from "../views/backoffice/LibraryImages";
+Vue.component("library-images", LibraryImages);
 
 /// les composants externes
 import "jodit/build/jodit.min.css";

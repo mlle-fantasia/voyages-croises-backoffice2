@@ -9,7 +9,7 @@
             class="form-control"
             name="textcat"
             id="textcat"
-            v-model="category.text"
+            v-model="tag.text"
             type="text"
           />
         </div>
@@ -20,18 +20,18 @@
             class="form-control"
             name="valuecat"
             id="valuecat"
-            v-model="category.value"
+            v-model="tag.value"
             type="text"
           />
         </div>
-        <button @click="saveCategory" class="btn btn-primary mt-2">
+        <button @click="saveTag" class="btn btn-primary mt-2">
           Enregistrer
         </button>
         <button
-          v-if="catId"
-          @click="deleteCategory"
+          v-if="tagId"
+          @click="deleteTag"
           class="btn btn-danger mt-2 ms-2"
-          :disabled="category.articles.length > 0"
+          :disabled="tag.articles.length > 0"
         >
           Supprimer
         </button>
@@ -39,54 +39,54 @@
     </div>
     <modal-confirm
       v-model="deleteConfirm"
-      :text="`Voulez-vous supprimer cette catégorie : ${category.text}  ?`"
+      :text="`Voulez-vous supprimer ce tag : ${tag.text}  ?`"
       @canceled="deleteConfirm = false"
-      @confirmed="deleteCategoryConfirmed"
+      @confirmed="deleteTagConfirmed"
     ></modal-confirm>
   </div>
 </template>
 
 <script>
 export default {
-  name: "FormCategory",
+  name: "FormTag",
   components: {},
   props: {
-    catId: [Number, String],
+    tagId: [Number, String],
   },
   data() {
     return {
-      category: {},
+      tag: {},
       deleteConfirm: false,
     };
   },
   async mounted() {
-    this.loadCategory();
+    this.loadTag();
   },
   watch: {
-    catId() {
-      this.loadCategory();
+    tagId() {
+      this.loadTag();
     },
   },
   methods: {
-    async loadCategory() {
-      if (this.catId) {
+    async loadTag() {
+      if (this.tagId) {
         let response = await this.$axios.get(
-          process.env.VUE_APP_SERVER_URL + "/admin/categories/" + this.catId
+          process.env.VUE_APP_SERVER_URL + "/admin/tags/" + this.tagId
         );
-        this.category = response.data;
+        this.tag = response.data;
       }
     },
-    async saveCategory() {
+    async saveTag() {
       let response;
-      if (this.catId) {
+      if (this.tagId) {
         response = await this.$axios.put(
-          process.env.VUE_APP_SERVER_URL + "/admin/categories/" + this.catId,
-          this.category
+          process.env.VUE_APP_SERVER_URL + "/admin/tags/" + this.tagId,
+          this.tag
         );
       } else {
         response = await this.$axios.post(
-          process.env.VUE_APP_SERVER_URL + "/admin/categories/add",
-          this.category
+          process.env.VUE_APP_SERVER_URL + "/admin/tags/add",
+          this.tag
         );
       }
       if (response.status !== 200) {
@@ -101,20 +101,18 @@ export default {
           group: "message",
           type: "success",
           title: "Confirmation",
-          text: "Categorie bien entregistrée !",
+          text: "Tag bien entregistrée !",
         });
       }
       this.$emit("saved");
     },
 
-    deleteCategory() {
+    deleteTag() {
       this.deleteConfirm = true;
     },
-    async deleteCategoryConfirmed() {
+    async deleteTagConfirmed() {
       await this.$axios.delete(
-        process.env.VUE_APP_SERVER_URL +
-          "/admin/categories/delete/" +
-          this.category.id
+        process.env.VUE_APP_SERVER_URL + "/admin/tags/delete/" + this.tag.id
       );
       this.deleteConfirm = false;
       this.$emit("saved");

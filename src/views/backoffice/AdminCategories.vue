@@ -26,10 +26,31 @@
       </div>
     </div>
     <div v-if="showFormCat">
-      <form-category
-        :catId="categoryToEdit.id"
-        @saved="categorySaved"
-      ></form-category>
+      <form-category :catId="categoryToEdit.id" @saved="saved"></form-category>
+    </div>
+    <!-- Les tags -->
+    <div class="d-flex align-items-center">
+      <h2>Les Tags</h2>
+      <button @click="addTag" class="btn btn-warning ms-5">Nouveau</button>
+    </div>
+    <div class="row articles-list mt-3">
+      <div class="col-md-6" v-for="tag in tags" :key="tag.id">
+        <div class="card-article d-flex align-items-center">
+          <div class="ms-2">
+            <div class="fw-bold">{{ tag.text }}</div>
+            <div>{{ tag.articles.length }} articles</div>
+          </div>
+          <div class="flex-grow-1"></div>
+          <div>
+            <button @click="editTag(tag)" class="btn btn-primary btn-sm">
+              Modifier
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-if="showFormTag">
+      <form-tag :tagId="tagToEdit.id" @saved="saved"></form-tag>
     </div>
   </div>
 </template>
@@ -46,6 +67,9 @@ export default {
       categories: [],
       showFormCat: false,
       categoryToEdit: {},
+      tags: [],
+      showFormTag: false,
+      tagToEdit: {},
     };
   },
   async mounted() {
@@ -56,9 +80,10 @@ export default {
       let response = await this.$axios.get(
         process.env.VUE_APP_SERVER_URL + "/admin/categories/list"
       );
-      console.log(response);
-      this.categories = response.data;
+      this.categories = response.data.categories;
+      this.tags = response.data.tags;
     },
+    /* les catégories */
     editCategory(cat) {
       this.showFormCat = true;
       this.categoryToEdit = cat;
@@ -67,7 +92,19 @@ export default {
       this.showFormCat = true;
       this.categoryToEdit = { id: 0 };
     },
-    categorySaved() {
+    /* les tags */
+    editTag(tag) {
+      this.showFormTag = true;
+      this.tagToEdit = tag;
+    },
+    addTag() {
+      this.showFormTag = true;
+      this.tagToEdit = { id: 0 };
+    },
+    /* les deux */
+    saved() {
+      this.showFormTag = false;
+      this.tagToEdit = {};
       this.showFormCat = false;
       this.categoryToEdit = {};
       this.loadCategories();

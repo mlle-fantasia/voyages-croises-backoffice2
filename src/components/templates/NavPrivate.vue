@@ -43,7 +43,7 @@
               class="nav-link"
               :class="$route.name === 'AdminCategories' ? 'active' : ''"
               to="/admin/categories"
-              >Les catégories</router-link
+              >Les catégories et tags</router-link
             >
           </li>
           <li class="nav-item">

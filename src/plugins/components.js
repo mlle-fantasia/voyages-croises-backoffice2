@@ -16,6 +16,8 @@ Vue.component("card-article", CardArticle);
 /// espace admin
 import FormCategory from "../views/backoffice/FormCategory";
 Vue.component("form-category", FormCategory);
+import FormTag from "../views/backoffice/FormTag";
+Vue.component("form-tag", FormTag);
 import FormPage from "../views/backoffice/FormPage";
 Vue.component("form-page", FormPage);
 import ModalConfirm from "../views/backoffice/ModalConfirm";

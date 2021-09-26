@@ -4,7 +4,10 @@
     <div class="row mt-3">
       <div class="col-md-8">
         <h5>Dernier article publié par vous</h5>
-        <div class="card-article d-flex align-items-center">
+        <div
+          class="card-article d-flex align-items-center"
+          v-if="lastArticleUser.id"
+        >
           <div
             class="bg-image miniature"
             :style="getImage(lastArticleUser.id)"
@@ -18,6 +21,20 @@
       </div>
       <div class="col-md-4">
         <h5>Dernier article publié sur le site</h5>
+        <div
+          class="card-article d-flex align-items-center"
+          v-if="lastArticle.id"
+        >
+          <div
+            class="bg-image miniature"
+            :style="getImage(lastArticle.id)"
+          ></div>
+          <div class="ms-2 fw-bold">
+            {{ lastArticle.title }}
+          </div>
+          <div class="flex-grow-1"></div>
+          <div class="">oui</div>
+        </div>
       </div>
     </div>
     <div class="row mt-4">
@@ -69,13 +86,17 @@ export default {
     return {
       lastArticle: {},
       lastArticleUser: {},
+      nbArticle: 0,
+      nbComVisible: 0,
+      nbComNotVisible: 0,
+      nbCategories: 0,
+      nbTags: 0,
     };
   },
   async mounted() {
     let response = await this.$axios.get(
       process.env.VUE_APP_SERVER_URL + "/admin/home"
     );
-    console.log(response);
     this.lastArticle = response.data.lastArticle;
     this.lastArticleUser = response.data.lastArticleUser;
     this.nbArticle = response.data.nbArticle;

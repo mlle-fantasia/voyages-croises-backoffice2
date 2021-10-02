@@ -145,6 +145,9 @@ export default {
 .comment {
   border-bottom: 1px solid #dddddd;
 }
+img.template-image-one {
+  max-width: 100%;
+}
 @media (min-width: 992px) {
   .logo {
     margin-bottom: 80px;

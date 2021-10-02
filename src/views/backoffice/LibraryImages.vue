@@ -7,14 +7,20 @@
       <ul class="nav nav-tabs">
         <li class="nav-item">
           <a
-            class="nav-link active"
+            class="nav-link"
+            :class="showImages ? 'active' : ''"
             aria-current="page"
             @click="changeOnglet('Images')"
             >Images</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" @click="changeOnglet('Import')">Importer</a>
+          <a
+            class="nav-link"
+            :class="showImport ? 'active' : ''"
+            @click="changeOnglet('Import')"
+            >Importer</a
+          >
         </li>
       </ul>
     </div>
@@ -22,15 +28,24 @@
       <div class="row mt-3">
         <div class="col-md-8">
           <h6>Les images déjà importées dans votre bibliothèque</h6>
-          <div class="d-flex" v-if="files.length > 0">
+          <div class="d-flex flex-wrap" v-if="files.length > 0">
             <div v-for="file in files" :key="file.id" class="mx-2 my-2">
-              <img
-                :class="imageSelected.id === file.id ? 'image-selected' : ''"
-                @click="selectImage(file)"
-                :src="getSRCImage(file.id)"
-                :alt="file.alt"
-                class="bibli-miniature pointer"
-              />
+              <div class="relative">
+                <img
+                  :class="imageSelected.id === file.id ? 'image-selected' : ''"
+                  @click="selectImage(file)"
+                  :src="getSRCImage(file.id)"
+                  :alt="file.alt"
+                  class="bibli-miniature pointer"
+                />
+                <div class="checkbox-image" v-if="multiple">
+                  <input
+                    @input="selectImageMultiple"
+                    v-model="file.selected"
+                    type="checkbox"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -179,26 +194,39 @@
 <script>
 export default {
   name: "LibraryImage",
+  props: {
+    multiple: Boolean,
+  },
   data() {
     return {
       showImages: true,
       showImport: false,
       files: [],
       imageSelected: {},
+      imagesMultipleSelected: [],
       filesToUpload: [],
       imageToUploadSelected: {},
     };
   },
   async mounted() {
+    this.imagesSelected = [];
     this.loadImages();
   },
   methods: {
     getSRCImage(id) {
-      console.log("je passe id", id);
       return `${process.env.VUE_APP_SERVER_URL}/admin/files/${id}/miniature`;
     },
     selectImage(file) {
       this.imageSelected = file;
+      // this.imagesSelected.push(file);
+      if (!this.canSelectMultiple)
+        this.$emit("imageSelected", this.imageSelected.id);
+    },
+    selectImageMultiple() {
+      this.imagesMultipleSelected = this.files.filter((image) => {
+        return image.selected;
+      });
+      this.$emit("imagesMultipleSelected", this.imagesMultipleSelected);
     },
     changeOnglet(onglet) {
       this.showImages = false;
@@ -290,5 +318,10 @@ export default {
 }
 .image-selected {
   box-shadow: #0c6efd 1px 0px 8px 3px;
+}
+.checkbox-image {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
 }
 </style>

@@ -69,7 +69,7 @@
           </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-12" v-if="article.contenu">
           <div class="mb-3">
             <label class="form-label" for="contenu">Contenu de l'article</label>
             <jodit-editor
@@ -189,6 +189,41 @@
               Supprimer
             </button>
           </div>
+          <div
+            class="grid"
+            v-masonry="containerId"
+            transition-duration="0.3s"
+            item-selector=".item"
+          >
+            <div class="item mb-4" v-masonry-tile>
+              <img
+                class="img-fluid template-image-masonery"
+                :src="getimagetest(11)"
+                alt="image"
+              />
+            </div>
+            <div class="item mb-4" v-masonry-tile>
+              <img
+                class="img-fluid template-image-masonery"
+                :src="getimagetest(12)"
+                alt="image"
+              />
+            </div>
+            <div class="item mb-4" v-masonry-tile>
+              <img
+                class="img-fluid template-image-masonery"
+                :src="getimagetest(13)"
+                alt="image"
+              />
+            </div>
+            <div class="item mb-4" v-masonry-tile>
+              <img
+                class="img-fluid template-image-masonery"
+                :src="getimagetest(14)"
+                alt="image"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -205,6 +240,11 @@
       @canceled="deleteConfirm = false"
       @confirmed="deleteArticleConfirmed"
     ></modal-confirm>
+    <modal-library-images
+      v-model="showLibrary"
+      :templateSeleted="templateSeleted"
+      @imageSelected="imageSelected"
+    ></modal-library-images>
   </div>
 </template>
 
@@ -244,10 +284,37 @@ export default {
         "center",
         "right",
         "|",
-        "image",
         "video",
         "file",
         "link",
+        "|",
+        {
+          that: this,
+          name: "Image",
+          iconURL: `${process.env.VUE_APP_SERVER_URL}/files/iconimage1`,
+          exec: function (editor) {
+            console.log("coucou this", this);
+            this.that.bibliImage(editor, "one");
+          },
+        },
+        {
+          that: this,
+          name: "Image",
+          iconURL: `${process.env.VUE_APP_SERVER_URL}/files/iconimage2`,
+          exec: function (editor) {
+            console.log("coucou this", this);
+            this.that.bibliImage(editor, "flex");
+          },
+        },
+        {
+          that: this,
+          name: "Image",
+          iconURL: `${process.env.VUE_APP_SERVER_URL}/files/iconimage3`,
+          exec: function (editor) {
+            console.log("coucou this", this);
+            this.that.bibliImage(editor, "masonry");
+          },
+        },
         "|",
         "hr",
         "table",
@@ -259,6 +326,9 @@ export default {
         "find",
         "preview",
       ],
+      showLibrary: false,
+      editor: {},
+      templateSeleted: "",
     };
   },
   async mounted() {
@@ -266,6 +336,9 @@ export default {
   },
   watch: {},
   methods: {
+    getimagetest(id) {
+      return `${process.env.VUE_APP_SERVER_URL}/files/${id}`;
+    },
     getImage() {
       if (this.mainImage.binary)
         return "background-image:url(" + this.mainImage.binary + ")";
@@ -285,9 +358,35 @@ export default {
       this.categories = response.data.categories;
       this.tags = response.data.tags;
     },
-    /*     inputTag(val) {
-      console.log("val", val);
-    }, */
+    imageSelected(id) {
+      let html = "";
+      if (Number.isInteger(id)) {
+        html =
+          "{{{insertImage:" + id + ":template:" + this.templateSeleted + "}}}";
+      } else {
+        let tabIds = [];
+        for (let i = 0; i < id.length; i++) {
+          const file = id[i];
+          tabIds.push(file.id);
+        }
+        html =
+          "{{{insertImage:" +
+          tabIds.join(",") +
+          ":template:" +
+          this.templateSeleted +
+          "}}}";
+      }
+      this.editor.s.insertHTML(html);
+      this.editor = {};
+      this.templateSeleted = "";
+    },
+    bibliImage(editor, template) {
+      console.log("bibliImage", template);
+      this.showLibrary = true;
+      this.editor = editor;
+      this.templateSeleted = template;
+      //editor.s.insertHTML(new Date().toDateString());
+    },
     async addTag() {
       let response = await this.$axios.post(
         process.env.VUE_APP_SERVER_URL + "/admin/tag/add",

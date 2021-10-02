@@ -6,9 +6,11 @@ import store from "./store";
 import "./plugins/components";
 import "./plugins/filters";
 
-
 import Notifications from "vue-notification";
 Vue.use(Notifications);
+
+import { VueMasonryPlugin } from "vue-masonry";
+Vue.use(VueMasonryPlugin);
 
 import "bootstrap";
 import { Tooltip } from "bootstrap";

@@ -189,7 +189,7 @@
               Supprimer
             </button>
           </div>
-          <div
+          <!--           <div
             class="grid"
             v-masonry="containerId"
             transition-duration="0.3s"
@@ -223,7 +223,7 @@
                 alt="image"
               />
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -306,7 +306,7 @@ export default {
             this.that.bibliImage(editor, "flex");
           },
         },
-        {
+        /*         {
           that: this,
           name: "Image",
           iconURL: `${process.env.VUE_APP_SERVER_URL}/files/iconimage3`,
@@ -314,7 +314,7 @@ export default {
             console.log("coucou this", this);
             this.that.bibliImage(editor, "masonry");
           },
-        },
+        }, */
         "|",
         "hr",
         "table",

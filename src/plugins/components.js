@@ -12,6 +12,8 @@ import FormComment from "../views/FormComment";
 Vue.component("form-comment", FormComment);
 import CardArticle from "../components/CardArticle";
 Vue.component("card-article", CardArticle);
+import AdminInputFile from "../components/AdminInputFile";
+Vue.component("input-file", AdminInputFile);
 
 /// espace admin
 import FormCategory from "../views/backoffice/FormCategory";

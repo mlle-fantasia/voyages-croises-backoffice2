@@ -336,9 +336,9 @@ export default {
   },
   watch: {},
   methods: {
-    getimagetest(id) {
+    /* getimagetest(id) {
       return `${process.env.VUE_APP_SERVER_URL}/files/${id}`;
-    },
+    }, */
     getImage() {
       if (this.mainImage.binary)
         return "background-image:url(" + this.mainImage.binary + ")";

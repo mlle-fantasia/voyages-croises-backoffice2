@@ -20,6 +20,7 @@ import AdminUsersEdit from "../views/backoffice/AdminUsersEdit.vue";
 import AdminComments from "../views/backoffice/AdminComments.vue";
 import AdminCategories from "../views/backoffice/AdminCategories.vue";
 import AdminLibraryImages from "../views/backoffice/AdminLibraryImages.vue";
+import AdminInstagram from "../views/backoffice/AdminInsta.vue";
 
 ////// les pages
 import AdminPageEdit from "../views/backoffice/AdminPageEdit.vue";
@@ -104,6 +105,11 @@ const routes = [
 		path: "/admin/images",
 		name: "AdminImages",
 		component: AdminLibraryImages,
+	},
+	{
+		path: "/admin/insta",
+		name: "AdminInsta",
+		component: AdminInstagram,
 	},
 	{
 		path: "/admin/pages",

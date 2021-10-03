@@ -31,7 +31,13 @@
       <h2 class="text-center">Retrouvez Lionel sur Instagram</h2>
       <hr />
     </div>
-    <div class="container-fluid"></div>
+    <div class="container-fluid p-0">
+      <div @click="goInsta" class="d-flex overflow-hidden">
+        <div class="" v-for="file in imgInsta" :key="file.id">
+          <div class="pointer img-insta" :style="getImageInst(file.id)" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -45,6 +51,7 @@ export default {
     return {
       lastArticles: [],
       texts: [],
+      imgInsta: [],
       presentationBlog: "",
       textBienvenue: "",
     };
@@ -76,11 +83,24 @@ export default {
     });
     if (presentationBlog.length)
       this.presentationBlog = presentationBlog[0].text;
+
+    // get image instagram
+    let response3 = await this.$axios.get(
+      process.env.VUE_APP_SERVER_URL + "/files/instagram"
+    );
+    this.imgInsta = response3.data;
   },
   methods: {
     getImage(article) {
       //return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${article.id}/image')`;
       return `${process.env.VUE_APP_SERVER_URL}/articles/${article.id}/image`;
+    },
+    getImageInst(id) {
+      if (id < 1) return;
+      return `background-image:url('${process.env.VUE_APP_SERVER_URL}/files/${id}/instagram')`;
+    },
+    goInsta() {
+      window.open("https://www.instagram.com/lio.front/?hl=fr", "bank");
     },
     goArticle(article) {
       console.log("article", article);
@@ -115,5 +135,17 @@ export default {
 }
 .bg-lio {
   padding: 60px;
+}
+.img-insta {
+  width: 280px;
+  height: 280px;
+  background-position: center;
+  background-size: cover;
+  -webkit-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+.img-insta:hover {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.3);
 }
 </style>

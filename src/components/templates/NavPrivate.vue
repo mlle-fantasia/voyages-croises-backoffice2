@@ -41,6 +41,14 @@
           <li class="nav-item">
             <router-link
               class="nav-link"
+              :class="$route.name === 'AdminImages' ? 'active' : ''"
+              to="/admin/images"
+              >Les images</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
               :class="$route.name === 'AdminCategories' ? 'active' : ''"
               to="/admin/categories"
               >Les catégories et tags</router-link
@@ -57,9 +65,9 @@
           <li class="nav-item">
             <router-link
               class="nav-link"
-              :class="$route.name === 'AdminImages' ? 'active' : ''"
-              to="/admin/images"
-              >Les images</router-link
+              :class="$route.name === 'AdminInsta' ? 'active' : ''"
+              to="/admin/insta"
+              >Instagram</router-link
             >
           </li>
           <li class="nav-item">

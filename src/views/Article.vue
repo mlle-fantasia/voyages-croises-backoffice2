@@ -90,6 +90,7 @@ export default {
   },
   watch: {
     $route() {
+      window.scrollTo(0, 0);
       this.loadArticle(false);
     },
   },

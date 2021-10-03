@@ -32,7 +32,10 @@
     <!-- exemple -->
     <div class="row mt-5">
       <h5>Elles s'afficheront sur la page d'accueil comme ceci :</h5>
-      <p>sur les petits écrans, les dernières images seront cachées.</p>
+      <p>
+        sur les petits écrans, les dernières images seront cachées. Les images
+        seront placées dans l'ordre chronologine d'enregistrement décroissant.
+      </p>
     </div>
     <div class="container mt-4">
       <h2 class="text-center">Retrouvez Lionel sur Instagram</h2>

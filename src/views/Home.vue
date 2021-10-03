@@ -1,13 +1,13 @@
 <template>
-  <div class="home">
+  <div class="home" ref="home">
     <div class="container-fluid img-accueil">
       <img src="/img/logo.png" class="logo" alt="logo" />
-      <button class="btn btn-warning">Découvrir</button>
+      <button @click="decouvrir" class="btn btn-warning">Découvrir</button>
     </div>
     <div class="container-fluid bg-ocre">
       <div class="container" v-html="textBienvenue"></div>
     </div>
-    <div class="container mt-5">
+    <div class="container mt-5" ref="decouvrir">
       <h2 class="text-center">Les derniers articles</h2>
       <hr />
       <div class="row my-5">
@@ -91,6 +91,9 @@ export default {
     this.imgInsta = response3.data;
   },
   methods: {
+    decouvrir() {
+      this.$refs.decouvrir.scrollIntoView();
+    },
     getImage(article) {
       //return `background-image:url('${process.env.VUE_APP_SERVER_URL}/articles/${article.id}/image')`;
       return `${process.env.VUE_APP_SERVER_URL}/articles/${article.id}/image`;

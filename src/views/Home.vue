@@ -32,7 +32,7 @@
       <hr />
     </div>
     <div class="container-fluid p-0">
-      <div @click="goInsta" class="d-flex overflow-hidden">
+      <div @click="goInsta" class="d-flex overflow-scroll">
         <div class="" v-for="file in imgInsta" :key="file.id">
           <div class="pointer img-insta" :style="getImageInst(file.id)" />
         </div>

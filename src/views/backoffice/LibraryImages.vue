@@ -237,7 +237,8 @@ export default {
     async loadImages() {
       this.imageSelected = {};
       let response = await this.$axios.get(
-        process.env.VUE_APP_SERVER_URL + "/admin/files/list"
+        process.env.VUE_APP_SERVER_URL + "/admin/files/list",
+        { params: { type: "library" } }
       );
       this.files = response.data;
     },

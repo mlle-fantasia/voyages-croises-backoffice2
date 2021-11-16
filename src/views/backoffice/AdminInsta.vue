@@ -1,7 +1,7 @@
 <template>
   <div class="admin-home">
     <h2>Les images instagram</h2>
-    <h5>Minimum 6 images :</h5>
+    <h5>Minimum 8 images :</h5>
     <!-- formulaire -->
     <div class="row">
       <div class="col-md-4" v-for="file in files" :key="file.id">
@@ -33,8 +33,10 @@
     <div class="row mt-5">
       <h5>Elles s'afficheront sur la page d'accueil comme ceci :</h5>
       <p>
-        sur les petits écrans, les dernières images seront cachées. Les images
-        seront placées dans l'ordre chronologine d'enregistrement décroissant.
+        sur les petits écrans, les dernières images seront cachées, il faudra
+        scroller horizontalement pour les voir. Les images seront placées dans
+        l'ordre chronologine d'enregistrement décroissant (dernière ajoutée en
+        premier).
       </p>
     </div>
     <div class="container mt-4">

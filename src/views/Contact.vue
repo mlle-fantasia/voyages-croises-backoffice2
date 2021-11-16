@@ -63,6 +63,19 @@
                 </div>
               </div>
             </div>
+            <div class="row">
+              <div class="col-md-6">
+                <vue-recaptcha
+                  ref="invisibleRecaptcha"
+                  @verify="onVerify"
+                  @expired="onExpired"
+                  :sitekey="google_key"
+                  :loadRecaptchaScript="true"
+                  theme="light"
+                >
+                </vue-recaptcha>
+              </div>
+            </div>
             <div class="alert alert-success" v-if="message_success">
               Votre message à bien été envoyé.
             </div>
@@ -87,10 +100,11 @@
 
 <script>
 // @ is an alias to /src
+import VueRecaptcha from "vue-recaptcha";
 
 export default {
   name: "contact",
-  components: {},
+  components: { VueRecaptcha },
   data() {
     return {
       page: {},
@@ -101,6 +115,8 @@ export default {
       message_error: false,
       textapropos: "",
       lastArticles: [],
+      recaptcha: false,
+      google_key: process.env.VUE_APP_RECAPTCHA_KEY,
     };
   },
   async mounted() {
@@ -125,6 +141,12 @@ export default {
   methods: {
     getImage() {
       return `background-image:url('${process.env.VUE_APP_SERVER_URL}/pages/${this.page.id}/image')`;
+    },
+    onVerify: function () {
+      this.recaptcha = true;
+    },
+    onExpired: function () {
+      this.recaptcha = false;
     },
     async sendMessage() {
       this.message_error = false;

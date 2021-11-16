@@ -291,18 +291,16 @@ export default {
         {
           that: this,
           name: "Image",
-          iconURL: `${process.env.VUE_APP_SERVER_URL}/files/iconimage1`,
+          iconURL: `${process.env.VUE_APP_SERVER_URL}/files/iconimage1/library`,
           exec: function (editor) {
-            console.log("coucou this", this);
             this.that.bibliImage(editor, "one");
           },
         },
         {
           that: this,
           name: "Image",
-          iconURL: `${process.env.VUE_APP_SERVER_URL}/files/iconimage2`,
+          iconURL: `${process.env.VUE_APP_SERVER_URL}/files/iconimage2/library`,
           exec: function (editor) {
-            console.log("coucou this", this);
             this.that.bibliImage(editor, "flex");
           },
         },
